@@ -15,6 +15,7 @@ const PostModal = ({ post, isPostModalOpen, setIsPostModalOpen }) => {
   const dispatch = useDispatch();
 
   const postModalRef = useRef();
+  const commentRef = useRef();
 
   const scrollYValue = window.scrollY;
   const scrollXValue = window.scrollX;
@@ -43,6 +44,23 @@ const PostModal = ({ post, isPostModalOpen, setIsPostModalOpen }) => {
         userId: currentUser._id,
       });
       const updatedPost = result.data.likedPost;
+      const updatedUserPosts = allUserPosts.map((userPost) =>
+        userPost._id === updatedPost._id ? updatedPost : userPost
+      );
+      dispatch(setAllUserPosts(updatedUserPosts));
+    } catch (err) {
+      dispatch(setErr(err.response.data));
+    }
+  };
+
+  const addComment = async (comment) => {
+    try {
+      const result = await axios.patch("/add-comment", {
+        userId: currentUser._id,
+        postId: _id,
+        comment: comment,
+      });
+      const updatedPost = result.data.updatedPost;
       const updatedUserPosts = allUserPosts.map((userPost) =>
         userPost._id === updatedPost._id ? updatedPost : userPost
       );
@@ -112,8 +130,18 @@ const PostModal = ({ post, isPostModalOpen, setIsPostModalOpen }) => {
             className="postModal__commentBox"
             onSubmit={(e) => e.preventDefault()}
           >
-            <input type="text" placeholder="Add a comment..." />
-            <button>Post</button>
+            <input
+              type="text"
+              placeholder="Add a comment..."
+              ref={commentRef.current.value}
+            />
+            <button
+              onClick={() => {
+                addComment();
+              }}
+            >
+              Post
+            </button>
           </form>
         </div>
       </div>
