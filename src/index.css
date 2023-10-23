@@ -1,0 +1,90 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --BACKGROUND: whitesmoke;
+  --MODAL-BACKGROUND: whitesmoke;
+  --FORM-BACKGROUND: white;
+  --INPUT-BACKGROUND: whitesmoke;
+  --PROFILE-BUTTON-BACKGROUND: white;
+  --TEXT-COLOR: black;
+  --LIGHT-TEXT-COLOR: rgb(73, 73, 73);
+  --BORDER: 1px solid rgba(128, 128, 128, 0.483);
+  --DROPZONE-BOUNDARY: 1px dashed black;
+}
+
+body {
+  background: var(--BACKGROUND);
+  font-family: "Roboto", sans-serif;
+}
+
+button {
+  font-family: "Roboto", sans-serif;
+}
+
+.pageNotFound {
+  text-align: center;
+  margin: 1rem;
+}
+
+.header {
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  width: 100%;
+  height: 60px;
+  border-bottom: var(--BORDER);
+  display: flex;
+  justify-content: center;
+}
+.header img {
+  width: 25%;
+  height: 100%;
+  cursor: pointer;
+  display: inline;
+}
+
+.btn {
+  border: none;
+  background: dodgerblue;
+  padding: 0.5rem 1rem;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn:hover {
+  opacity: 0.9;
+}
+
+.dark-theme {
+  --BACKGROUND: black;
+  --MODAL-BACKGROUND: #333;
+  --FORM-BACKGROUND: rgb(29, 29, 29);
+  --INPUT-BACKGROUND: rgb(50, 50, 50);
+  --PROFILE-BUTTON-BACKGROUND: rgb(50, 50, 50);
+  --TEXT-COLOR: whitesmoke;
+  --LIGHT-TEXT-COLOR: grey;
+  --BORDER: 1px solid rgba(128, 128, 128, 0.483);
+  --DROPZONE-BOUNDARY: 1px dashed rgb(195, 195, 195);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --BACKGROUND: black;
+    --MODAL-BACKGROUND: #333;
+    --FORM-BACKGROUND: rgb(29, 29, 29);
+    --INPUT-BACKGROUND: rgb(50, 50, 50);
+    --PROFILE-BUTTON-BACKGROUND: rgb(50, 50, 50);
+    --TEXT-COLOR: whitesmoke;
+    --LIGHT-TEXT-COLOR: rgb(178, 178, 178);
+    --BORDER: 1px solid rgba(128, 128, 128, 0.483);
+    --DROPZONE-BOUNDARY: 1px dashed rgb(195, 195, 195);
+  }
+}

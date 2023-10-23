@@ -1,0 +1,72 @@
+@import "../index.css";
+
+.sidebar {
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  flex-direction: row;
+  padding: 1rem 0.5rem;
+  color: var(--TEXT-COLOR);
+  width: 100%;
+  border-top: var(--BORDER);
+  justify-content: center;
+  z-index: 10;
+  background-color: var(--BACKGROUND);
+}
+
+.sidebar__upper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  /* background: rebeccapurple; */
+}
+
+.sidebar__lower {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  /* background-color: firebrick; */
+}
+
+.sidebar__btn {
+  background: none;
+  display: flex;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 15px;
+  align-items: center;
+  font-size: 0.9rem;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  font-weight: 600;
+}
+
+.sidebar__btn:hover {
+  background: rgba(128, 128, 128, 0.194);
+}
+
+.sidebar__i {
+  font-size: 2rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+}
+
+.sidebar__btnText {
+  display: none;
+}
+
+.sidebar__logo {
+  /* background-color: dodgerblue; */
+  max-height: 130px;
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  display: none;
+}
+.sidebar__logo img {
+  width: 65%;
+  height: 65%;
+  cursor: pointer;
+}
