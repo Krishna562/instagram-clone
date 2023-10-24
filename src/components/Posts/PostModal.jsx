@@ -14,7 +14,6 @@ const PostModal = ({ post, isPostModalOpen, setIsPostModalOpen }) => {
   const allUserPosts = useSelector((state) => state.user.allUserPosts);
 
   const dispatch = useDispatch();
-
   const postModalRef = useRef();
   const commentRef = useRef();
 

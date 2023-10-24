@@ -15,7 +15,6 @@ const Login = () => {
   const dispatch = useDispatch();
 
   const navigateToHome = () => {
-    console.log("navigating...");
     navigate("/");
   };
 

@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 const Profile = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isPostsActive, setIsPostsActive] = useState(true);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
 
   const dispatch = useDispatch();
   const username = useParams().username;
@@ -43,72 +44,77 @@ const Profile = () => {
   };
   useEffect(() => {
     getSpecificUserAndHisPosts();
-  }, []);
+  }, [username]);
 
   if (!isLoading) {
     return (
-      <section className="profile">
-        <CreatePost />
-        <header className="profile__header">
-          <p>{username}</p>
-        </header>
-
-        {/* PROFILE INFO */}
-
-        <div className="profile__info">
-          <div className="profile__info-img">
-            <img
-              src={profilePic ? profilePic : defaultProfilePic}
-              alt="profile pic"
-            />
-          </div>
-          <div className="profile__info-textInfo">
+      <>
+        <section className="profile">
+          <CreatePost />
+          <header className="profile__header">
             <p>{username}</p>
-            <button>Edit Profile</button>
-          </div>
-        </div>
-        <div className="profile__status">
-          <div className="profile__status-tab">
-            <span>{allUserPosts.length}</span> posts
-          </div>
-          <div className="profile__status-tab">
-            <span>{followers.length}</span> followers
-          </div>
-          <div className="profile__status-tab">
-            <span>{following.length}</span> following
-          </div>
-        </div>
-        <div className="profile__categories">
-          <i
-            className={`profile__categories-category ${
-              isPostsActive ? "profile__categories-category-active" : null
-            }`}
-            onClick={() => {
-              setIsPostsActive(true);
-            }}
-          >
-            <BsGrid />
-          </i>
-          <i
-            className={`profile__categories-category ${
-              !isPostsActive ? "profile__categories-category-active" : null
-            }`}
-            onClick={() => {
-              setIsPostsActive(false);
-            }}
-          >
-            <BsTag />
-          </i>
-        </div>
+          </header>
 
-        {/* PROFILE GRID */}
+          {/* PROFILE INFO */}
 
-        <div className="profile__grid">
-          {allUserPosts.map((post) => {
-            return <PostCard key={post._id} post={post} />;
-          })}
-        </div>
-      </section>
+          <div className="profile__info">
+            <div className="profile__info-img">
+              <img
+                src={profilePic ? profilePic : defaultProfilePic}
+                alt="profile pic"
+                onClick={() => {
+                  setIsProfileModalOpen(true);
+                }}
+              />
+            </div>
+            <div className="profile__info-textInfo">
+              <p>{username}</p>
+              <button>Edit Profile</button>
+            </div>
+          </div>
+          <div className="profile__status">
+            <div className="profile__status-tab">
+              <span>{allUserPosts.length}</span> posts
+            </div>
+            <div className="profile__status-tab">
+              <span>{followers.length}</span> followers
+            </div>
+            <div className="profile__status-tab">
+              <span>{following.length}</span> following
+            </div>
+          </div>
+          <div className="profile__categories">
+            <i
+              className={`profile__categories-category ${
+                isPostsActive ? "profile__categories-category-active" : null
+              }`}
+              onClick={() => {
+                setIsPostsActive(true);
+              }}
+            >
+              <BsGrid />
+            </i>
+            <i
+              className={`profile__categories-category ${
+                !isPostsActive ? "profile__categories-category-active" : null
+              }`}
+              onClick={() => {
+                setIsPostsActive(false);
+              }}
+            >
+              <BsTag />
+            </i>
+          </div>
+
+          {/* PROFILE GRID */}
+
+          <div className="profile__grid">
+            {allUserPosts.map((post) => {
+              return <PostCard key={post._id} post={post} />;
+            })}
+          </div>
+        </section>
+      </>
     );
   }
 };

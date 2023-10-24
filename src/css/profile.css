@@ -134,6 +134,7 @@
 
 .profile__card:hover .profile__card-overlay {
   display: flex;
+  color: whitesmoke;
 }
 
 .profile__card img {
@@ -174,7 +175,7 @@
   transform: translate(-50%, -50%);
   border: none;
   outline: none;
-  height: 50%;
+  height: 70%;
   width: 90%;
   cursor: auto;
 }
@@ -312,6 +313,7 @@
 
 .comment img {
   width: 10%;
+  height: 10%;
   max-width: 40px;
   border-radius: 50%;
 }

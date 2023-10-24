@@ -13,7 +13,6 @@ const Comment = ({ commentObj, postId }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const { comment, _id, userId } = commentObj;
-
   const dispatch = useDispatch();
 
   const currentUser = useSelector((state) => state.user.currentUser);

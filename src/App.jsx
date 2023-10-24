@@ -33,6 +33,7 @@ function App() {
       cb();
     }
   };
+
   useEffect(() => {
     userLoggedIn(() => {
       setIsLoading(false);
