@@ -6,6 +6,7 @@ import defaultProfilePic from "../../assets/default profile pic.jpg";
 import { setErr } from "../../store/reducers/Error/errReducer";
 import axios from "../../axios/axios";
 import { setAllUserPosts } from "../../store/reducers/User/userReducer";
+import Comment from "./Comment";
 
 const PostModal = ({ post, isPostModalOpen, setIsPostModalOpen }) => {
   const specificUser = useSelector((state) => state.user.specificUser);
@@ -33,7 +34,7 @@ const PostModal = ({ post, isPostModalOpen, setIsPostModalOpen }) => {
     }
   }, [isPostModalOpen]);
 
-  const { postImg, comments, likes, _id } = post;
+  const { postImg, comments, likes, _id, caption } = post;
 
   // LIKE POST
 
@@ -93,9 +94,25 @@ const PostModal = ({ post, isPostModalOpen, setIsPostModalOpen }) => {
             <h4>{specificUser.username}</h4>
           </div>
 
+          <div className="postModal__caption">
+            <img
+              src={
+                specificUser.profilePic
+                  ? specificUser.profilePic
+                  : defaultProfilePic
+              }
+              alt="profile pic"
+            />
+            <div className="comment__info">
+              <p className="comment__info-creator">{specificUser.username}</p>
+              <p className="comment__info-comment">{caption}</p>
+            </div>
+          </div>
           <div className="postModal__comments">
             {comments.map((comment) => {
-              <div className="postModal__comment">comment</div>;
+              return (
+                <Comment commentObj={comment} key={comment._id} postId={_id} />
+              );
             })}
           </div>
           <div className="postModal__reactionFunctions">
@@ -115,7 +132,12 @@ const PostModal = ({ post, isPostModalOpen, setIsPostModalOpen }) => {
               />
             )}
 
-            <FaRegComment className="postModel__reactionFunctions-function" />
+            <FaRegComment
+              className="postModel__reactionFunctions-function"
+              onClick={() => {
+                commentRef.current.focus();
+              }}
+            />
           </div>
           {likes.length ? (
             <div className="postModal__likes">
@@ -133,11 +155,12 @@ const PostModal = ({ post, isPostModalOpen, setIsPostModalOpen }) => {
             <input
               type="text"
               placeholder="Add a comment..."
-              ref={commentRef.current.value}
+              ref={commentRef}
             />
             <button
               onClick={() => {
-                addComment();
+                addComment(commentRef.current.value);
+                commentRef.current.value = "";
               }}
             >
               Post

@@ -25,6 +25,7 @@ body {
 
 button {
   font-family: "Roboto", sans-serif;
+  color: var(--TEXT-COLOR);
 }
 
 .pageNotFound {

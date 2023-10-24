@@ -222,10 +222,26 @@
 .postModal__userInfo img {
   border-radius: 50%;
   width: 10%;
+  max-width: 40px;
   align-self: center;
 }
 
-/* RIGHT SIDE COMMENTS SECTIONS */
+/* RIGHT SIDE - CAPTION */
+
+.postModal__caption {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.postModal__caption img {
+  width: 10%;
+  max-width: 40px;
+  border-radius: 50%;
+}
+
+/* RIGHT SIDE - COMMENTS SECTIONS */
 
 .postModal__comments {
   flex-grow: 1;
@@ -283,4 +299,39 @@
   right: 1rem;
   font-size: 1.5rem;
   cursor: pointer;
+}
+
+/* POST MODAL - COMMENT */
+
+.comment {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.comment img {
+  width: 10%;
+  max-width: 40px;
+  border-radius: 50%;
+}
+
+.comment__info {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+.comment__info-creator {
+  font-weight: 700;
+}
+
+.comment__delete-btn {
+  background: var(--PROFILE-BUTTON-BACKGROUND);
+  padding: 0.1rem 0.5rem;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  display: grid;
+  place-content: center;
 }
