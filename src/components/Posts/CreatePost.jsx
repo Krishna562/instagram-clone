@@ -2,16 +2,26 @@ import { useDropzone } from "react-dropzone";
 import { useRef, useEffect } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { BiSolidRightArrowCircle } from "react-icons/bi";
+import { IoMdReverseCamera } from "react-icons/io";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setIsCreateModalOpen,
   setCurrentPost,
   setIsCaptionSectionVisible,
+  setEditingPost,
+  setAllPosts,
 } from "../../store/reducers/Post/postReducer";
 import { setErr } from "../../store/reducers/Error/errReducer";
 import { setAllUserPosts } from "../../store/reducers/User/userReducer";
 import defaultProfilePic from "../../assets/default profile pic.jpg";
 import { useState } from "react";
+import axios from "../../axios/axios";
+import {
+  setTagDialog,
+  setTempTags,
+} from "../../store/reducers/Post/postReducer";
+import SearchTagDialog from "./SearchTagDialog";
+import Tag from "./Tag";
 
 const CreatePost = () => {
   const dispatch = useDispatch();
@@ -19,9 +29,15 @@ const CreatePost = () => {
   const isModalOpen = useSelector((state) => state.post.isCreateModalOpen);
   const currentUser = useSelector((state) => state.user.currentUser);
   const allUserPosts = useSelector((state) => state.user.allUserPosts);
+  const editingPost = useSelector((state) => state.post.editingPost);
+  const tempTags = useSelector((state) => state.post.tempTags);
+  const allPosts = useSelector((state) => state.post.allPosts);
 
   const [imgFile, setImgFile] = useState();
   const [imgUrl, setImgUrl] = useState("");
+  const [captionVal, setCaptionVal] = useState("");
+  const [isHovering, setIsHovering] = useState(false);
+  const [tagDialogRef, setTagDialogRef] = useState();
 
   const isCaptionSectionVisible = useSelector(
     (state) => state.post.isCaptionSectionVisible
@@ -39,12 +55,14 @@ const CreatePost = () => {
 
   const modalRef = useRef(0);
   const captionAreaRef = useRef(0);
-  const captionRef = useRef("");
+  const previewImgRef = useRef();
+  const createPostPreviewImg = useRef();
 
-  const createPost = async (caption, imgFile) => {
+  const createPost = async (caption, imgFile, tags) => {
     const formData = new FormData();
     formData.append("imgFile", imgFile);
     formData.append("caption", caption);
+    formData.append("tags", JSON.stringify(tags));
     try {
       const response = await fetch("http://localhost:3000/createPost", {
         method: "PUT",
@@ -54,44 +72,113 @@ const CreatePost = () => {
       const result = await response.json();
       const newPost = result.newPost;
       dispatch(setCurrentPost(newPost));
-      const updatedUserPosts = [...allUserPosts, newPost];
+      dispatch(setAllUserPosts([newPost, ...allUserPosts]));
+      dispatch(setAllPosts([newPost, ...allPosts]));
+      dispatch(setTempTags([]));
+    } catch (err) {
+      console.log(err.response.data);
+      dispatch(setErr(err.response.data));
+    }
+  };
+
+  const editPost = async (editedCaption, editedTags) => {
+    try {
+      const result = await axios.patch(`/edit-post/${editingPost.postId}`, {
+        newCaption: editedCaption,
+        editedTags: editedTags,
+      });
+      const updatedPost = result.data.updatedPost;
+      const updatedUserPosts = allUserPosts.map((userPost) =>
+        userPost._id === updatedPost._id ? updatedPost : userPost
+      );
       dispatch(setAllUserPosts(updatedUserPosts));
     } catch (err) {
+      console.log(err);
       dispatch(setErr(err.response.data));
+    }
+  };
+
+  const setTagDialogPosition = (e) => {
+    if (!e.target.contains(createPostPreviewImg.current)) return;
+    const rect = e.target.getBoundingClientRect();
+
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const height = rect.height;
+    const width = rect.width;
+
+    const topPercent = (y / height) * 100;
+    const leftPercent = (x / width) * 100;
+
+    dispatch(
+      setTagDialog({
+        isOpen: true,
+        position: { horizontal: leftPercent, vertical: topPercent },
+      })
+    );
+  };
+
+  const handleClick = (e) => {
+    if (
+      tagDialogRef &&
+      !tagDialogRef.contains(e.target) &&
+      isCaptionSectionVisible &&
+      !previewImgRef.current.contains(e.target)
+    ) {
+      dispatch(
+        setTagDialog({
+          isOpen: false,
+          position: { horizontal: 0, vertical: 0 },
+        })
+      );
     }
   };
 
   useEffect(() => {
     if (isModalOpen) {
       modalRef.current.showModal();
+      if (editingPost.isEditing) {
+        setImgUrl(editingPost.props.imgUrl);
+        setCaptionVal(editingPost.props.currentCaption);
+        dispatch(setIsCaptionSectionVisible(true));
+      }
     } else {
       modalRef.current.close();
-      dispatch(setIsCreateModalOpen(false));
+      dispatch(setIsCaptionSectionVisible(false));
+      setImgUrl("");
+      setCaptionVal("");
+      dispatch(setEditingPost({ isEditing: false, props: {}, postId: "" }));
     }
   }, [isModalOpen]);
 
-  const MODAL_WIDTH = modalRef.current.offsetWidth;
+  useEffect(() => {
+    if (isHovering && imgUrl) {
+      previewImgRef.current.classList.add("crosshairOnHover");
+    } else if (!isHovering && imgUrl) {
+      previewImgRef.current.classList.remove("crosshairOnHover");
+    }
+  }, [isHovering]);
 
   return (
     <dialog
       className="createPost"
+      onClose={() => {
+        dispatch(setIsCreateModalOpen(false));
+      }}
       ref={modalRef}
       style={{
-        width: isCaptionSectionVisible
-          ? MODAL_WIDTH + (MODAL_WIDTH * 30) / 100
-          : null,
-        maxWidth: isCaptionSectionVisible
-          ? MODAL_WIDTH + (MODAL_WIDTH * 30) / 100
-          : null,
+        width: isCaptionSectionVisible ? "80%" : null,
       }}
+      onClick={(e) => handleClick(e)}
     >
       <div className="createPost__container">
-        {!isCaptionSectionVisible ? (
+        {!isCaptionSectionVisible || editingPost.isEditing ? (
           <AiOutlineCloseCircle
             className="createPost__close-btn"
             onClick={() => {
               dispatch(setIsCreateModalOpen(false));
-              setImgUrl("");
+              dispatch(setTempTags([]));
             }}
           />
         ) : (
@@ -99,25 +186,90 @@ const CreatePost = () => {
             className="createPost__prev-btn"
             onClick={() => {
               dispatch(setIsCaptionSectionVisible(false));
+              dispatch(setTempTags([]));
             }}
           />
         )}
 
         {imgUrl && !isCaptionSectionVisible && (
-          <BiSolidRightArrowCircle
-            className="createPost__next-btn"
-            onClick={() => {
-              dispatch(setIsCaptionSectionVisible(true));
-            }}
-          />
+          <div className="createPost__rightBtnCon">
+            <IoMdReverseCamera
+              className="profilePicModal__changePicBtn"
+              style={{
+                color: imgUrl ? "red" : "var(--LIGHT-TEXT-COLOR)",
+              }}
+              onClick={() => {
+                setImgUrl("");
+              }}
+            />
+            <BiSolidRightArrowCircle
+              className="createPost__next-btn"
+              onClick={() => {
+                dispatch(setIsCaptionSectionVisible(true));
+              }}
+            />
+          </div>
         )}
 
-        <h3 className="createPost__heading">Create new post</h3>
+        <h3 className="createPost__heading">
+          {editingPost.isEditing ? "Edit Post" : "Create new post"}
+        </h3>
 
         <section className="createPost__createArea">
           {imgUrl && (
-            <div className="createPost__previewImg">
-              <img src={imgUrl} alt="image preview" />
+            <div
+              className="createPost__previewImg"
+              style={{
+                flexBasis: isCaptionSectionVisible ? "70%" : "100%",
+              }}
+              ref={previewImgRef}
+              onMouseOver={() => {
+                if (isCaptionSectionVisible) setIsHovering(true);
+              }}
+              onMouseLeave={() => setIsHovering(false)}
+              onClick={(e) => {
+                if (!isCaptionSectionVisible) return;
+                setTagDialogPosition(e);
+              }}
+            >
+              <SearchTagDialog setTagDialogRef={setTagDialogRef} />
+              {tempTags.map((tag) => {
+                const { username, position } = tag;
+                return (
+                  <Tag username={username} position={position} key={username} />
+                );
+              })}
+              <img
+                src={imgUrl}
+                alt="image preview"
+                ref={createPostPreviewImg}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                }}
+                onDrop={(e) => {
+                  const username = e.dataTransfer.getData("text");
+                  const screenX = e.clientX;
+                  const screenY = e.clientY;
+
+                  const rect = e.target.getBoundingClientRect();
+
+                  const leftPx = screenX - rect.left;
+                  const topPx = screenY - rect.top;
+
+                  const left = (leftPx / rect.width) * 100;
+                  const top = (topPx / rect.height) * 100;
+
+                  const updatedTempTags = tempTags.map((tempTag) => {
+                    return tempTag.username === username
+                      ? {
+                          ...tempTag,
+                          position: { horizontal: left, vertical: top },
+                        }
+                      : tempTag;
+                  });
+                  dispatch(setTempTags(updatedTempTags));
+                }}
+              />
             </div>
           )}
 
@@ -128,7 +280,7 @@ const CreatePost = () => {
               ref={captionAreaRef}
               className="createPost__captionSection"
               style={{
-                flexBasis: isCaptionSectionVisible ? "40%" : "0%",
+                flexBasis: isCaptionSectionVisible ? "30%" : "0%",
                 padding: isCaptionSectionVisible ? "1rem" : "0rem",
               }}
             >
@@ -148,17 +300,35 @@ const CreatePost = () => {
                   name="caption"
                   type="text"
                   placeholder="Write a caption..."
-                  ref={captionRef}
+                  value={captionVal}
+                  onChange={(e) => {
+                    setCaptionVal(e.target.value);
+                  }}
                 />
 
                 <button
                   className="btn"
+                  style={{
+                    background: !captionVal
+                      ? "var(--NOT-ACTIVE-BACKGROUND)"
+                      : null,
+                  }}
                   onClick={() => {
-                    createPost(captionRef.current.value, imgFile);
+                    if (editingPost.isEditing) {
+                      if (!captionVal) {
+                        return;
+                      }
+                      editPost(captionVal, tempTags);
+                    } else {
+                      if (!captionVal || !imgFile) {
+                        return;
+                      }
+                      createPost(captionVal, imgFile, tempTags);
+                    }
                     dispatch(setIsCreateModalOpen(false));
                   }}
                 >
-                  Share
+                  {editingPost.isEditing ? "Edit" : "Share"}
                 </button>
               </form>
             </section>

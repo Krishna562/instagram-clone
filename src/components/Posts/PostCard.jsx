@@ -3,7 +3,7 @@ import { AiFillHeart } from "react-icons/ai";
 import PostModal from "./PostModal";
 import { useState } from "react";
 
-const PostCard = ({ post }) => {
+const PostCard = ({ post, creator }) => {
   const [isPostModalOpen, setIsPostModalOpen] = useState(false);
   const { comments, likes, postImg } = post;
   return (
@@ -12,6 +12,7 @@ const PostCard = ({ post }) => {
         post={post}
         isPostModalOpen={isPostModalOpen}
         setIsPostModalOpen={setIsPostModalOpen}
+        creator={creator}
       />
       <div
         className="profile__card"

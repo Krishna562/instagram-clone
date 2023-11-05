@@ -2,16 +2,20 @@ import { BiSearchAlt } from "react-icons/bi";
 import { TbHome } from "react-icons/tb";
 import { BsPlusSquare } from "react-icons/bs";
 import { FaBars } from "react-icons/fa";
-import InstagramLogo from "../assets/InstagramLogo.svg";
-import { setIsCreateModalOpen } from "../store/reducers/Post/postReducer";
+import InstagramLogo from "../../assets/InstagramLogo.svg";
+import { setIsCreateModalOpen } from "../../store/reducers/Post/postReducer";
 import { useDispatch, useSelector } from "react-redux";
-import defaultProfilePic from "../assets/default profile pic.jpg";
+import defaultProfilePic from "../../assets/default profile pic.jpg";
 import { useNavigate } from "react-router-dom";
+import MoreDialog from "./MoreDialog";
+import { setIsMoreDialogOpen } from "../../store/reducers/More/moreReducer";
 
 const Sidebar = () => {
   const { username, profilePic } = useSelector(
     (state) => state.user.currentUser
   );
+  const isMoreDialogOpen = useSelector((state) => state.more.isMoreDialogOpen);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -50,14 +54,20 @@ const Sidebar = () => {
           }}
         >
           <img
-            className="sidebar__i"
+            className="sidebar__i sidebar__profilePicIcon"
             src={profilePic ? profilePic : defaultProfilePic}
           />
           <span className="sidebar__btnText">Profile</span>
         </button>
       </div>
       <div className="sidebar__lower">
-        <button className="sidebar__btn">
+        <MoreDialog />
+        <button
+          className="sidebar__btn"
+          onClick={() => {
+            dispatch(setIsMoreDialogOpen(!isMoreDialogOpen));
+          }}
+        >
           <i className="sidebar__i">{<FaBars />}</i>
           <span className="sidebar__btnText">More</span>
         </button>

@@ -1,0 +1,239 @@
+.home {
+  width: 470px;
+  margin: 5rem auto 7rem auto;
+  color: var(--TEXT-COLOR);
+}
+
+.home__post {
+  width: 100%;
+  height: 700px;
+  display: flex;
+  flex-direction: column;
+  border-bottom: var(--BORDER);
+  margin-top: 1rem;
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.1);
+}
+
+/* HEADER */
+
+.home__header {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  padding: 1rem 0.5rem;
+  position: relative;
+}
+.home__header-profilePic {
+  width: 35px;
+  height: 35px;
+  object-fit: cover;
+  border-radius: 50%;
+  align-self: center;
+  cursor: pointer;
+}
+.home__header p {
+  align-self: center;
+  cursor: pointer;
+  padding-left: 1rem;
+  /* background: firebrick; */
+  height: 100%;
+  display: grid;
+  place-content: center;
+  font-weight: 700;
+}
+.home__header-separator {
+  font-weight: 900;
+  color: var(--LIGHT-TEXT-COLOR);
+  font-size: 1.5rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  align-self: flex-start;
+  margin-top: 6px;
+  display: grid;
+  place-content: center;
+  margin-left: 0.3rem;
+  margin-right: 0.3rem;
+}
+.home__header-time {
+  font-size: 0.9rem;
+  align-self: center;
+  color: var(--LIGHT-TEXT-COLOR);
+}
+.home__header-followBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  align-self: center;
+  color: dodgerblue;
+}
+
+/* POST IMG */
+
+.home__postImg {
+  width: 470px;
+  height: 470px;
+  position: relative;
+}
+.home__postImg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* REACTION FUNCTIONS - LIKE AND COMMENT */
+
+.home__reactionFunctions {
+  padding: 0.8rem 0.3rem;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  font-size: 1.5rem;
+}
+.home__reactionFunctions-function {
+  cursor: pointer;
+}
+
+/* LIKES COUNT */
+
+.home__likesCount {
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding-left: 0.5rem;
+}
+
+/* CAPTION */
+
+.home__caption {
+  display: flex;
+  flex-direction: row;
+  gap: 0.3rem;
+  padding: 0.5rem 0.5rem;
+  font-size: 0.9rem;
+}
+.home__caption-username {
+  font-weight: 700;
+}
+
+/* VIEW COMMENT BUTTON */
+
+.home__viewComments-btn {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  color: var(--LIGHT-TEXT-COLOR);
+  cursor: pointer;
+  word-spacing: 1px;
+}
+
+/* COMMENT FORM BOX */
+
+.home__commentForm {
+  padding: 0.5rem 0 0 0.3rem;
+  display: flex;
+  flex-direction: row;
+}
+.home__commentForm input {
+  background: none;
+  border: none;
+  flex-grow: 1;
+  outline: none;
+  color: var(--TEXT-COLOR);
+}
+.home__commentForm input::placeholder {
+  color: var(--LIGHT-TEXT-COLOR);
+}
+.home__commentForm button {
+  background: none;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+/* HOVER PROFILE */
+
+.hoverProfile {
+  z-index: 10;
+  position: absolute;
+  width: 400px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  left: 2rem;
+  top: 3rem;
+  background: var(--BACKGROUND);
+  border-radius: 15px;
+  box-shadow: 0px 0px 10px 0 rgba(0, 0, 0, 0.2);
+}
+.hoverProfile__userInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1rem 0 1rem;
+}
+.hoverProfile__userInfo img {
+  width: 35px;
+  height: 35px;
+  object-fit: cover;
+  border-radius: 50%;
+  align-self: center;
+  cursor: pointer;
+}
+.hoverProfile__userInfo span {
+  cursor: pointer;
+  font-weight: 700;
+}
+.hoverProfile__userActivity {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.hoverProfile__activity-value {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  text-align: center;
+  align-items: center;
+}
+.hoverProfile__activityNum {
+  font-weight: 700;
+}
+.hoverProfile__posts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.2rem;
+  flex-grow: 1;
+}
+.hoverProfile__postImg {
+  position: relative;
+  width: 100%;
+}
+.hoverProfile__postImg img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
+}
+.hoverProfile__postImg img:hover {
+  opacity: 0.9;
+}
+.hoverProfile__postImg::before {
+  content: "";
+  padding-bottom: 100%;
+  display: block;
+}
+.hoverProfile__followBtn {
+  padding: 0.5rem;
+  display: grid;
+  place-content: center;
+}
+
+/* UTIL CLASSES */
+
+.pointer {
+  cursor: pointer;
+}

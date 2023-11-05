@@ -12,8 +12,8 @@
   background: var(--MODAL-BACKGROUND);
   color: var(--TEXT-COLOR);
   border-radius: 15px;
+  max-width: 800px;
   border: none;
-  max-width: 600px;
   transition: ease-in-out 0.3s;
 }
 
@@ -31,9 +31,10 @@
 
 .createPost__heading {
   text-align: center;
-  padding: 1rem 0;
-  border-bottom: var(--BORDER);
+  padding: 1rem;
+  padding-bottom: 0;
   font-size: 1rem;
+  height: 10%;
 }
 
 .createPost__close-btn {
@@ -47,10 +48,6 @@
 
 .createPost__next-btn {
   color: dodgerblue;
-  position: absolute;
-  right: 1rem;
-  top: 1rem;
-  font-size: 1.3rem;
   cursor: pointer;
 }
 
@@ -64,9 +61,21 @@
   transform: scaleX(-1);
 }
 
+/* CREATE AREA */
+
+.createPost__createArea {
+  flex-basis: 100%;
+  height: 90%;
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+}
+
 .createPost__previewImg {
-  width: 100%;
+  flex-basis: 100%;
   height: 100%;
+  transition: all 0.3s;
+  position: relative;
 }
 
 .createPost__previewImg img {
@@ -75,10 +84,13 @@
   object-fit: cover;
 }
 
-.createPost__createArea {
+.createPost__rightBtnCon {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  font-size: 1.3rem;
   display: flex;
-  flex-direction: row;
-  flex-grow: 1;
+  gap: 0.5rem;
 }
 
 /* CREATE POST - DROPZONE */
@@ -122,8 +134,8 @@
 .createPost__captionSection form {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
   flex-grow: 1;
+  /* background-color: rebeccapurple; */
 }
 .createPost__captionSection form button {
   align-self: center;
@@ -151,4 +163,87 @@
 
 .createPost__captionSection-creator span {
   align-self: center;
+}
+
+/* TAG DIALOG */
+
+.tagDialog {
+  position: absolute;
+  transform: translate(-20%, 5%);
+  border: none;
+  outline: none;
+  border-radius: 15px;
+  background: var(--MODAL-BACKGROUND);
+  color: var(--TEXT-COLOR);
+  height: 190px;
+  width: 250px;
+  cursor: auto;
+  z-index: 20;
+}
+
+.tagDialog__con {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.tagDialog__con::before {
+  content: "";
+  position: absolute;
+  border: 10px transparent solid;
+  border-bottom-color: var(--MODAL-BACKGROUND);
+  top: -1.2rem;
+  left: 20%;
+  transform: translateX(-50%);
+}
+
+/* TAG DIALOG - HEADER */
+
+.tagDialog__header {
+  display: flex;
+  gap: 0.5rem;
+  height: 25%;
+  white-space: nowrap;
+  padding: 0.5rem;
+}
+.tagDialog__header label {
+  padding: 0.5rem;
+  padding-right: 0;
+}
+.tagDialog__header input {
+  border: none;
+  background: var(--BACKGROUND);
+  border-radius: 15px;
+  padding-left: 10px;
+  color: var(--TEXT-COLOR);
+  outline: none;
+}
+
+/* TAG DIALOG - RESULTS */
+
+.tagDialog__results {
+  display: flex;
+  flex-direction: column;
+  background: var(--BACKGROUND);
+  height: 75%;
+  width: 100%;
+  overflow: auto;
+  user-select: none;
+}
+.tagDialog__resultUser {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  align-items: center;
+}
+.tagDialog__resultUser img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.tagDialog__resultUser span {
+  font-weight: 700;
 }

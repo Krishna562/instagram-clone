@@ -3,16 +3,24 @@ import Input from "../../components/Input";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "../../axios/axios.js";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import yupSignupSchema from "../../yupSchema/signup";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { setCurrentUser } from "../../store/reducers/User/userReducer";
 import { setErr } from "../../store/reducers/Error/errReducer";
 
 const Signup = () => {
+  const isAuthenticated = useSelector((state) => state.user.isLoggedIn);
+
+  if (isAuthenticated) {
+    return <Navigate to={"/"} />;
+  }
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const methods = useForm({ resolver: yupResolver(yupSignupSchema) });
+
   const onSumbit = methods.handleSubmit(async (data) => {
     const { username, email, password, confirmPassword } = data;
     try {

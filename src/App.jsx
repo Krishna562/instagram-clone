@@ -15,13 +15,17 @@ import {
 } from "./store/reducers/User/userReducer";
 import { setErr } from "./store/reducers/Error/errReducer";
 import Layout from "./components/Layout";
-import Profile from "./components/profile";
+import Profile from "./components/Profile/Profile";
 import PageNotFound from "./views/page not found/pageNotFound";
 
 function App() {
   const dispatch = useDispatch();
+
   const [isLoading, setIsLoading] = useState(true);
+
   const isAuthenticated = useSelector((state) => state.user.isLoggedIn);
+  const isDarkTheme = useSelector((state) => state.more.isDarkTheme);
+
   const userLoggedIn = async (cb) => {
     try {
       const result = await axios.get("/loggedIn");
@@ -35,6 +39,14 @@ function App() {
   };
 
   useEffect(() => {
+    if (isDarkTheme) {
+      document.body.classList.add("dark-theme");
+    } else {
+      document.body.classList.remove("dark-theme");
+    }
+  }, [isDarkTheme]);
+
+  useEffect(() => {
     userLoggedIn(() => {
       setIsLoading(false);
     });
@@ -46,6 +58,7 @@ function App() {
         <Routes>
           <Route element={<Layout />}>
             <Route
+              exact
               path="/"
               element={
                 <ProtectedRoute isAuthenticated={isAuthenticated}>
@@ -54,6 +67,7 @@ function App() {
               }
             />
             <Route
+              exact
               path="/:username"
               element={
                 <ProtectedRoute isAuthenticated={isAuthenticated}>
@@ -62,10 +76,10 @@ function App() {
               }
             />
           </Route>
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
+          <Route exact path="/signup" element={<Signup />} />
+          <Route exact path="/login" element={<Login />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
-          <Route path="/404" element={<PageNotFound />} />
+          <Route element={<PageNotFound />} />
         </Routes>
       </>
     );

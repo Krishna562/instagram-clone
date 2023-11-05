@@ -6,6 +6,7 @@ import {
   setAllUserPosts,
   setCurrentUser,
 } from "../../store/reducers/User/userReducer";
+import { setAllPosts } from "../../store/reducers/Post/postReducer";
 import { useEffect, useState } from "react";
 
 const Comment = ({ commentObj, postId }) => {
@@ -17,6 +18,7 @@ const Comment = ({ commentObj, postId }) => {
 
   const currentUser = useSelector((state) => state.user.currentUser);
   const allUserPosts = useSelector((state) => state.user.allUserPosts);
+  const allPosts = useSelector((state) => state.post.allPosts);
 
   const getLatestCurrentUser = async () => {
     try {
@@ -57,6 +59,10 @@ const Comment = ({ commentObj, postId }) => {
       const updatedArr = allUserPosts.map((userPost) =>
         userPost._id === updatedPost._id ? updatedPost : userPost
       );
+      const updatedPosts = allPosts.map((post) =>
+        post._id === updatedPost._id ? updatedPost : post
+      );
+      dispatch(setAllPosts(updatedPosts));
       dispatch(setAllUserPosts(updatedArr));
     } catch (err) {
       dispatch(setErr(err.response.data));

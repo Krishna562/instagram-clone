@@ -1,22 +1,23 @@
 import Input from "../../components/Input";
-import { Link, Navigate } from "react-router-dom";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import yupLoginSchema from "../../yupSchema/login";
 import axios from "../../axios/axios";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useNavigate, Navigate, Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { setErr } from "../../store/reducers/Error/errReducer";
 import { setCurrentUser } from "../../store/reducers/User/userReducer";
 
 const Login = () => {
+  const isAuthenticated = useSelector((state) => state.user.isLoggedIn);
+
+  if (isAuthenticated) {
+    return <Navigate to={"/"} />;
+  }
+
   const methods = useForm({ resolver: yupResolver(yupLoginSchema) });
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const navigateToHome = () => {
-    navigate("/");
-  };
 
   const onSubmit = methods.handleSubmit(async (data) => {
     const { email, password } = data;
@@ -27,7 +28,7 @@ const Login = () => {
       });
       const user = result.data.user;
       dispatch(setCurrentUser(user));
-      navigateToHome("/");
+      navigate("/");
     } catch (err) {
       dispatch(setErr(err.response.data));
     }
