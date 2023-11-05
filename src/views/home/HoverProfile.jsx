@@ -87,7 +87,7 @@ const HoverProfile = ({ creator, isHovering, setIsHovering }) => {
             <span className="hoverProfile__activityNum">
               {thisUserPosts.length}
             </span>{" "}
-            {thisUserPosts.length === 1 ? "post" : "posts"}
+            {thisUserPosts.length === 1 ? "post" : "postss"}
           </span>
           <span className="hoverProfile__activity-value">
             <span className="hoverProfile__activityNum">
