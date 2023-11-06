@@ -6,6 +6,8 @@ const INITIAL_STATE = {
   isLoggedIn: false,
   allUserPosts: [],
   specificUser: {},
+  isSearchbarVisible: false,
+  searchBtnRef: {},
 };
 
 const userSlice = createSlice({
@@ -27,6 +29,12 @@ const userSlice = createSlice({
     setSpecificUser: (state, action) => {
       state.specificUser = action.payload;
     },
+    setIsSearchbarVisible: (state, action) => {
+      state.isSearchbarVisible = action.payload;
+    },
+    setSearchBtnRef: (state, action) => {
+      state.searchBtnRef = action.payload;
+    },
   },
 });
 
@@ -36,6 +44,8 @@ export const {
   checkAuthStatus,
   setAllUserPosts,
   setSpecificUser,
+  setIsSearchbarVisible,
+  setSearchBtnRef,
 } = userSlice.actions;
 
 const userReducer = userSlice.reducer;

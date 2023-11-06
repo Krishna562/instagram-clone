@@ -9,6 +9,11 @@ import defaultProfilePic from "../../assets/default profile pic.jpg";
 import { useNavigate } from "react-router-dom";
 import MoreDialog from "./MoreDialog";
 import { setIsMoreDialogOpen } from "../../store/reducers/More/moreReducer";
+import {
+  setIsSearchbarVisible,
+  setSearchBtnRef,
+} from "../../store/reducers/User/userReducer";
+import { useEffect, useRef } from "react";
 
 const Sidebar = () => {
   const { username, profilePic } = useSelector(
@@ -18,6 +23,11 @@ const Sidebar = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const searchBtnRef = useRef();
+
+  useEffect(() => {
+    dispatch(setSearchBtnRef(searchBtnRef.current));
+  }, []);
 
   return (
     <section className="sidebar">
@@ -34,7 +44,11 @@ const Sidebar = () => {
           <i className="sidebar__i">{<TbHome />}</i>
           <span className="sidebar__btnText">Home</span>
         </button>
-        <button className="sidebar__btn">
+        <button
+          ref={searchBtnRef}
+          className="sidebar__btn"
+          onClick={() => dispatch(setIsSearchbarVisible(true))}
+        >
           <i className="sidebar__i">{<BiSearchAlt />}</i>
           <span className="sidebar__btnText">Search Users</span>
         </button>
