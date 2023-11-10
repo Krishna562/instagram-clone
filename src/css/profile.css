@@ -104,6 +104,9 @@
 .profile__info-status-tab {
   cursor: pointer;
 }
+.profile__info-status-tab:first-child {
+  cursor: auto;
+}
 .profile__info-status span {
   font-weight: 700;
 }

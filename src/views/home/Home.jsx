@@ -8,7 +8,6 @@ import Post from "./Post";
 
 const Home = () => {
   const dispatch = useDispatch();
-  console.log("from home");
   const allPosts = useSelector((state) => state.post.allPosts);
 
   const getAllPosts = async () => {

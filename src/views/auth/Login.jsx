@@ -6,7 +6,10 @@ import axios from "../../axios/axios";
 import { useNavigate, Navigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setErr } from "../../store/reducers/Error/errReducer";
-import { setCurrentUser } from "../../store/reducers/User/userReducer";
+import {
+  checkAuthStatus,
+  setCurrentUser,
+} from "../../store/reducers/User/userReducer";
 
 const Login = () => {
   const isAuthenticated = useSelector((state) => state.user.isLoggedIn);
@@ -28,6 +31,7 @@ const Login = () => {
       });
       const user = result.data.user;
       dispatch(setCurrentUser(user));
+      dispatch(checkAuthStatus(true));
       navigate("/");
     } catch (err) {
       dispatch(setErr(err.response.data));
