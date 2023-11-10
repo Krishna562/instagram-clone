@@ -2,7 +2,6 @@ import { Outlet, useLocation } from "react-router-dom";
 import Sidebar from "./Sidebar/Sidebar";
 import Header from "./Header";
 import Searchbar from "./Searchbar/Searchbar";
-import { useSelector } from "react-redux";
 
 const Layout = () => {
   const location = useLocation();

@@ -105,7 +105,17 @@ const MoreDialog = () => {
           <div className="moreDialog__option">
             <span
               className="moreDialog__hoverOverlay"
-              onClick={() => dispatch(setIsDarkTheme(!isDarkTheme))}
+              onClick={() => {
+                localStorage.setItem(
+                  "isDarkTheme",
+                  JSON.stringify(!isDarkTheme)
+                );
+                dispatch(
+                  setIsDarkTheme(
+                    JSON.parse(localStorage.getItem("isDarkTheme"))
+                  )
+                );
+              }}
             >
               <div className="moreDialog__darkTheme-toggle">
                 <span className="moreDialog__darkTheme-toggle-title">

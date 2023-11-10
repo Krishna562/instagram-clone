@@ -2,8 +2,10 @@ import Input from "../../components/Input";
 import { useForm, FormProvider } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, useNavigate } from "react-router-dom";
+import { setErr } from "../../store/reducers/Error/errReducer";
+import axios from "../../axios/axios";
 
 const ForgotPassword = () => {
   const isAuthenticated = useSelector((state) => state.user.isLoggedIn);
@@ -11,6 +13,11 @@ const ForgotPassword = () => {
   if (isAuthenticated) {
     return <Navigate to={"/"} />;
   }
+
+  // IF NOT AUTHENTICATED
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const yupSchema = yup.object().shape({
     email: yup
@@ -21,8 +28,20 @@ const ForgotPassword = () => {
 
   const methods = useForm({ resolver: yupResolver(yupSchema) });
 
+  const sendRequestEmail = async (email) => {
+    try {
+      const result = await axios.put("/resetPass-request", {
+        email: email,
+      });
+      navigate("/request-sent");
+    } catch (err) {
+      console.log(err.response.data);
+      dispatch(setErr(err.response.data));
+    }
+  };
+
   const onSubmit = methods.handleSubmit((data) => {
-    console.log(data);
+    sendRequestEmail(data.email);
   });
 
   return (

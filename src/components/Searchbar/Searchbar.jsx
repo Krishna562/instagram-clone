@@ -27,11 +27,14 @@ const Searchbar = () => {
   const searchbarRef = useRef();
 
   const handleClickOutside = (e) => {
-    if (
-      searchbarRef.current.contains(e.target) ||
-      searchBtnRef.contains(e.target)
-    )
-      return;
+    if (searchBtnRef) {
+      if (
+        searchbarRef.current.contains(e.target) ||
+        searchBtnRef.contains(e.target)
+      )
+        return;
+    }
+
     dispatch(setIsSearchbarVisible(false));
   };
 

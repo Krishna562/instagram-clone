@@ -94,119 +94,153 @@ const Profile = () => {
 
   if (!isLoading) {
     return (
-      <section className="profile">
-        <CreatePost />
+      <section className="profile__con">
+        <div className="profile__underSidebar"></div>
+        <div className="profile__centerCon">
+          <section className="profile">
+            <CreatePost />
 
-        <EditProfileModal
-          isEditProfileModalOpen={isEditProfileModalOpen}
-          setIsEditProfileModalOpen={setIsEditProfileModalOpen}
-        />
-
-        <FollowModal
-          isFollowModalOpen={isFollowModalOpen}
-          setIsFollowModalOpen={setIsFollowModalOpen}
-          isFollowersTabActive={isFollowersTabActive}
-        />
-
-        <header className="profile__header">
-          <p>{username}</p>
-        </header>
-
-        {/* PROFILE INFO */}
-
-        <div className="profile__info">
-          <div className="profile__info-img">
-            <img
-              src={profilePic ? profilePic : defaultProfilePic}
-              alt="profile pic"
+            <EditProfileModal
+              isEditProfileModalOpen={isEditProfileModalOpen}
+              setIsEditProfileModalOpen={setIsEditProfileModalOpen}
             />
-          </div>
-          <div className="profile__info-textInfo">
-            <p>{username}</p>
-            {currentUser.username === username ? (
-              <button
-                onClick={() => {
-                  setIsEditProfileModalOpen(true);
-                }}
-              >
-                Edit Profile
-              </button>
-            ) : (
-              <button
-                onClick={() => {
-                  followUser();
-                }}
-              >
-                {currentUser.following.find(
-                  (followingId) => followingId === _id
-                )
-                  ? "Unfollow"
-                  : "Follow"}
-              </button>
-            )}
-          </div>
-        </div>
-        <div className="profile__status">
-          <div className="profile__status-tab">
-            <span>{allUserPosts.length}</span> posts
-          </div>
-          <div
-            className="profile__status-tab"
-            onClick={() => {
-              setIsFollowModalOpen(true);
-              setIsFollowersTabActive(true);
-            }}
-          >
-            <span>{followers.length}</span>{" "}
-            {followers.length === 1 ? "follower" : "followers"}
-          </div>
-          <div
-            className="profile__status-tab"
-            onClick={() => {
-              setIsFollowModalOpen(true);
-              setIsFollowersTabActive(false);
-            }}
-          >
-            <span>{following.length}</span> following
-          </div>
-        </div>
-        <div className="profile__categories">
-          <i
-            className={`profile__categories-category ${
-              isPostsActive ? "profile__categories-category-active" : null
-            }`}
-            onClick={() => {
-              setIsPostsActive(true);
-            }}
-          >
-            <BsGrid />
-          </i>
-          <i
-            className={`profile__categories-category ${
-              !isPostsActive ? "profile__categories-category-active" : null
-            }`}
-            onClick={() => {
-              setIsPostsActive(false);
-            }}
-          >
-            <BsTag />
-          </i>
-        </div>
 
-        {/* PROFILE GRID */}
+            <FollowModal
+              isFollowModalOpen={isFollowModalOpen}
+              setIsFollowModalOpen={setIsFollowModalOpen}
+              isFollowersTabActive={isFollowersTabActive}
+            />
 
-        <div className="profile__grid">
-          {isPostsActive
-            ? allUserPosts.map((post) => (
-                <PostCard key={post._id} post={post} />
-              ))
-            : taggedPosts.map((taggedPost) => (
-                <PostCard
-                  key={taggedPost._id}
-                  post={taggedPost}
-                  creator={taggedPost.creatorId}
+            <header className="profile__header">
+              <p>{username}</p>
+            </header>
+
+            {/* PROFILE INFO */}
+
+            <div className="profile__info">
+              <div className="profile__info-img">
+                <img
+                  src={profilePic ? profilePic : defaultProfilePic}
+                  alt="profile pic"
                 />
-              ))}
+              </div>
+              <div className="profile__info-textInfo-con">
+                <div className="profile__info-textInfo">
+                  <p>{username}</p>
+                  {currentUser.username === username ? (
+                    <button
+                      onClick={() => {
+                        setIsEditProfileModalOpen(true);
+                      }}
+                    >
+                      Edit Profile
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        followUser();
+                      }}
+                    >
+                      {currentUser.following.find(
+                        (followingId) => followingId === _id
+                      )
+                        ? "Unfollow"
+                        : "Follow"}
+                    </button>
+                  )}
+                </div>
+                <div className="profile__info-status">
+                  <div className="profile__info-status-tab">
+                    <span>{allUserPosts.length}</span> posts
+                  </div>
+                  <div
+                    className="profile__info-status-tab lowerOpacity"
+                    onClick={() => {
+                      setIsFollowModalOpen(true);
+                      setIsFollowersTabActive(true);
+                    }}
+                  >
+                    <span>{followers.length}</span>{" "}
+                    {followers.length === 1 ? "follower" : "followers"}
+                  </div>
+                  <div
+                    className="profile__info-status-tab lowerOpacity"
+                    onClick={() => {
+                      setIsFollowModalOpen(true);
+                      setIsFollowersTabActive(false);
+                    }}
+                  >
+                    <span>{following.length}</span> following
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="profile__status">
+              <div className="profile__status-tab">
+                <span>{allUserPosts.length}</span> posts
+              </div>
+              <div
+                className="profile__status-tab lowerOpacity"
+                onClick={() => {
+                  setIsFollowModalOpen(true);
+                  setIsFollowersTabActive(true);
+                }}
+              >
+                <span>{followers.length}</span>{" "}
+                {followers.length === 1 ? "follower" : "followers"}
+              </div>
+              <div
+                className="profile__status-tab lowerOpacity"
+                onClick={() => {
+                  setIsFollowModalOpen(true);
+                  setIsFollowersTabActive(false);
+                }}
+              >
+                <span>{following.length}</span> following
+              </div>
+            </div>
+
+            {/* POST CATEGORIES */}
+
+            <div className="profile__categories">
+              <i
+                className={`profile__categories-category ${
+                  isPostsActive ? "profile__categories-category-active" : null
+                } lowerOpacity`}
+                onClick={() => {
+                  setIsPostsActive(true);
+                }}
+              >
+                <BsGrid /> <span>Posts</span>
+              </i>
+              <i
+                className={`profile__categories-category ${
+                  !isPostsActive ? "profile__categories-category-active" : null
+                } lowerOpacity`}
+                onClick={() => {
+                  setIsPostsActive(false);
+                }}
+              >
+                <BsTag /> <span>Tagged</span>
+              </i>
+            </div>
+
+            {/* PROFILE GRID */}
+
+            <div className="profile__grid">
+              {isPostsActive
+                ? allUserPosts.map((post) => (
+                    <PostCard key={post._id} post={post} />
+                  ))
+                : taggedPosts.map((taggedPost) => (
+                    <PostCard
+                      key={taggedPost._id}
+                      post={taggedPost}
+                      creator={taggedPost.creatorId}
+                    />
+                  ))}
+            </div>
+          </section>
         </div>
       </section>
     );

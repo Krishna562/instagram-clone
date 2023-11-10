@@ -1,7 +1,8 @@
 import { useFormContext } from "react-hook-form";
 import findError from "../utils/findErr";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { BiErrorCircle } from "react-icons/bi";
+import { setErr } from "../store/reducers/Error/errReducer";
 
 const Input = ({ placeholder, type, field }) => {
   const {
@@ -9,10 +10,14 @@ const Input = ({ placeholder, type, field }) => {
     formState: { errors },
   } = useFormContext();
 
+  const dispatch = useDispatch();
+
   const error = useSelector((state) => state.error.err);
   const errObj = findError(field, errors);
+
+  // ERRORS FROM BACKEND VALIDATION
   let respectiveErrObj;
-  if (error.errors) {
+  if (error && error.errors) {
     respectiveErrObj = error.errors.find((errObj) => errObj.field === field);
   }
 
@@ -24,7 +29,11 @@ const Input = ({ placeholder, type, field }) => {
         className="form__input"
         placeholder={placeholder}
         name={field}
-        {...register(field)}
+        {...register(field, {
+          onChange: () => {
+            dispatch(setErr(null));
+          },
+        })}
       />
       {errObj && (
         <p className="form__inputErr">

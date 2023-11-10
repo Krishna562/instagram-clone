@@ -7,7 +7,7 @@ const INITIAL_STATE = {
   allUserPosts: [],
   specificUser: {},
   isSearchbarVisible: false,
-  searchBtnRef: {},
+  searchBtnRef: null,
 };
 
 const userSlice = createSlice({

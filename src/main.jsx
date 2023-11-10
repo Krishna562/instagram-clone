@@ -8,6 +8,7 @@ import "./css/profile.css";
 import "./css/home.css";
 import "./css/search.css";
 import "./css/createPost.css";
+import "./css/auth.css";
 import { BrowserRouter } from "react-router-dom";
 import store from "./store/store.js";
 import { Provider } from "react-redux";

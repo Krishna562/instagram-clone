@@ -118,6 +118,29 @@ const PostModal = ({ post, isPostModalOpen, setIsPostModalOpen, creator }) => {
       )}
 
       <div className="postModal__con">
+        <div className="postModal__userInfo-top">
+          <div className="postModal__userInfo-left">
+            <img
+              src={
+                specificUser.profilePic
+                  ? specificUser.profilePic
+                  : defaultProfilePic
+              }
+              alt="profile pic"
+            />
+            <h4>{specificUser.username}</h4>
+          </div>
+
+          {currentUser._id === specificUser._id && (
+            <SlOptions
+              className="postModal__optionsBtn"
+              onClick={() => {
+                setIsOptionsModalOpen(true);
+              }}
+            />
+          )}
+        </div>
+
         {/* LEFT SIDE - POST IMAGE */}
 
         <div className="postModal__postImg-con">
@@ -177,27 +200,36 @@ const PostModal = ({ post, isPostModalOpen, setIsPostModalOpen, creator }) => {
             )}
           </div>
 
-          <div className="postModal__caption">
-            <img
-              src={
-                specificUser.profilePic
-                  ? specificUser.profilePic
-                  : defaultProfilePic
-              }
-              alt="profile pic"
-            />
-            <div className="comment__info">
-              <p className="comment__info-creator">{specificUser.username}</p>
-              <p className="comment__info-comment">{caption}</p>
+          {/* COMMENTS AND CAPTION (TOP) */}
+
+          <div className="postModal__commentsCon-top">
+            <div className="postModal__caption">
+              <img
+                src={
+                  specificUser.profilePic
+                    ? specificUser.profilePic
+                    : defaultProfilePic
+                }
+                alt="profile pic"
+              />
+              <div className="comment__info">
+                <p className="comment__info-creator">{specificUser.username}</p>
+                <p className="comment__info-comment">{caption}</p>
+              </div>
+            </div>
+            <div className="postModal__comments">
+              {comments.map((comment) => {
+                return (
+                  <Comment
+                    commentObj={comment}
+                    key={comment._id}
+                    postId={_id}
+                  />
+                );
+              })}
             </div>
           </div>
-          <div className="postModal__comments">
-            {comments.map((comment) => {
-              return (
-                <Comment commentObj={comment} key={comment._id} postId={_id} />
-              );
-            })}
-          </div>
+
           <div className="postModal__reactionFunctions">
             {likes.find((userId) => userId === currentUser._id) ? (
               <AiFillHeart
@@ -260,6 +292,33 @@ const PostModal = ({ post, isPostModalOpen, setIsPostModalOpen, creator }) => {
               Post
             </button>
           </form>
+          <div className="postModal__commentsCon-bottom">
+            <div className="postModal__caption">
+              <img
+                src={
+                  specificUser.profilePic
+                    ? specificUser.profilePic
+                    : defaultProfilePic
+                }
+                alt="profile pic"
+              />
+              <div className="comment__info">
+                <p className="comment__info-creator">{specificUser.username}</p>
+                <p className="comment__info-comment">{caption}</p>
+              </div>
+            </div>
+            <div className="postModal__comments">
+              {comments.map((comment) => {
+                return (
+                  <Comment
+                    commentObj={comment}
+                    key={comment._id}
+                    postId={_id}
+                  />
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
     </dialog>

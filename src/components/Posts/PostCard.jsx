@@ -1,5 +1,5 @@
 import { FaComment } from "react-icons/fa";
-import { AiFillHeart } from "react-icons/ai";
+import { BsFillHeartFill } from "react-icons/bs";
 import PostModal from "./PostModal";
 import { useState } from "react";
 
@@ -15,7 +15,7 @@ const PostCard = ({ post, creator }) => {
         creator={creator}
       />
       <div
-        className="profile__card"
+        className="profile__card lowerOpacity"
         onClick={() => {
           setIsPostModalOpen(true);
         }}
@@ -26,11 +26,15 @@ const PostCard = ({ post, creator }) => {
 
         <div className="profile__card-overlay">
           <div className="profile__card-overlay-icon">
-            <AiFillHeart />
+            <i>
+              <BsFillHeartFill />
+            </i>
             <span>{likes.length}</span>
           </div>
           <div className="profile__card-overlay-icon">
-            <FaComment />
+            <i>
+              <FaComment />
+            </i>
             <span>{comments.length}</span>
           </div>
         </div>

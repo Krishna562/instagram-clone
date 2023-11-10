@@ -8,6 +8,7 @@
 
 html::-webkit-scrollbar {
   width: 1vw;
+  max-width: 8px;
 }
 html::-webkit-scrollbar-thumb {
   background-color: grey;
@@ -91,8 +92,8 @@ button {
 
 .tag {
   position: absolute;
-  color: var(--TEXT-COLOR);
-  background: rgba(0, 0, 0, 0.747);
+  color: whitesmoke;
+  background: rgba(0, 0, 0, 0.7);
   border-radius: 5px;
   cursor: pointer;
   user-select: none;
@@ -114,7 +115,7 @@ button {
 }
 .tag__con::before {
   border: 10px transparent solid;
-  border-bottom-color: rgba(0, 0, 0, 0.747);
+  border-bottom-color: rgba(0, 0, 0, 0.7);
   content: "";
   position: absolute;
   top: -1.2rem;
@@ -153,4 +154,18 @@ button {
     --BORDER: 1px solid rgba(128, 128, 128, 0.483);
     --DROPZONE-BOUNDARY: 1px dashed rgb(195, 195, 195);
   }
+}
+
+/* RESPONSIVE - MEDIA QUERRIES */
+
+@media screen and (min-width: 768px) {
+  .header {
+    display: none;
+  }
+}
+
+/* UTILITY */
+
+.lowerOpacity:active {
+  opacity: 0.6;
 }

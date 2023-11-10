@@ -168,7 +168,7 @@ const CreatePost = () => {
       }}
       ref={modalRef}
       style={{
-        width: isCaptionSectionVisible ? "80%" : null,
+        width: isCaptionSectionVisible ? "95%" : null,
       }}
       onClick={(e) => handleClick(e)}
     >
@@ -220,7 +220,7 @@ const CreatePost = () => {
             <div
               className="createPost__previewImg"
               style={{
-                flexBasis: isCaptionSectionVisible ? "70%" : "100%",
+                flexBasis: isCaptionSectionVisible ? "60%" : "100%",
               }}
               ref={previewImgRef}
               onMouseOver={() => {
@@ -280,7 +280,7 @@ const CreatePost = () => {
               ref={captionAreaRef}
               className="createPost__captionSection"
               style={{
-                flexBasis: isCaptionSectionVisible ? "30%" : "0%",
+                flexBasis: isCaptionSectionVisible ? "40%" : "0%",
                 padding: isCaptionSectionVisible ? "1rem" : "0rem",
               }}
             >

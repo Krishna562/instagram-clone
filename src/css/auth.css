@@ -1,0 +1,19 @@
+/* REQUEST SENT PAGE */
+
+.requestSent {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  gap: 2rem;
+  color: var(--TEXT-COLOR);
+  text-align: center;
+}
+
+.requestSent img {
+  height: 300px;
+  width: 400px;
+  object-fit: cover;
+}

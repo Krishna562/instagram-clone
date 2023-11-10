@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Signup from "./views/auth/Signup";
 import Home from "./views/home/Home";
 import Login from "./views/auth/Login";
@@ -17,6 +17,9 @@ import { setErr } from "./store/reducers/Error/errReducer";
 import Layout from "./components/Layout";
 import Profile from "./components/Profile/Profile";
 import PageNotFound from "./views/page not found/pageNotFound";
+import RequestSent from "./views/auth/RequestSent.jsx";
+import ResetPassword from "./views/auth/ResetPassword.jsx";
+import { setIsDarkTheme } from "./store/reducers/More/moreReducer.js";
 
 function App() {
   const dispatch = useDispatch();
@@ -32,6 +35,7 @@ function App() {
       dispatch(checkAuthStatus(result.data.isLoggedIn));
       dispatch(setCurrentUser(result.data.user));
     } catch (err) {
+      dispatch(checkAuthStatus(false));
       dispatch(setErr(err.response.data));
     } finally {
       cb();
@@ -39,26 +43,38 @@ function App() {
   };
 
   useEffect(() => {
-    if (isDarkTheme) {
+    userLoggedIn(() => {
+      if (JSON.parse(localStorage.getItem("isDarkTheme")) === null) {
+        localStorage.setItem("isDarkTheme", JSON.stringify(true));
+      } else {
+        dispatch(
+          setIsDarkTheme(JSON.parse(localStorage.getItem("isDarkTheme")))
+        );
+      }
+      setIsLoading(false);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (JSON.parse(localStorage.getItem("isDarkTheme"))) {
       document.body.classList.add("dark-theme");
     } else {
       document.body.classList.remove("dark-theme");
     }
   }, [isDarkTheme]);
 
-  useEffect(() => {
-    userLoggedIn(() => {
-      setIsLoading(false);
-    });
-  }, []);
-
   if (!isLoading) {
     return (
       <>
         <Routes>
-          <Route element={<Layout />}>
+          <Route
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Layout />
+              </ProtectedRoute>
+            }
+          >
             <Route
-              exact
               path="/"
               element={
                 <ProtectedRoute isAuthenticated={isAuthenticated}>
@@ -67,7 +83,6 @@ function App() {
               }
             />
             <Route
-              exact
               path="/:username"
               element={
                 <ProtectedRoute isAuthenticated={isAuthenticated}>
@@ -76,9 +91,12 @@ function App() {
               }
             />
           </Route>
-          <Route exact path="/signup" element={<Signup />} />
-          <Route exact path="/login" element={<Login />} />
+
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
+          <Route path="/request-sent" element={<RequestSent />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route element={<PageNotFound />} />
         </Routes>
       </>

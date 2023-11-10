@@ -1,6 +1,6 @@
 .home {
   width: 470px;
-  margin: 5rem auto 7rem auto;
+  margin: 5rem auto 5rem auto;
   color: var(--TEXT-COLOR);
 }
 
@@ -118,6 +118,7 @@
 
 .home__viewComments-btn {
   align-self: flex-start;
+  margin-left: 0.5rem;
   background: none;
   border: none;
   color: var(--LIGHT-TEXT-COLOR);
@@ -128,7 +129,7 @@
 /* COMMENT FORM BOX */
 
 .home__commentForm {
-  padding: 0.5rem 0 0 0.3rem;
+  padding: 0.5rem 0 0 0.5rem;
   display: flex;
   flex-direction: row;
 }
@@ -236,4 +237,12 @@
 
 .pointer {
   cursor: pointer;
+}
+
+/* RESPONSIVE - MEDIA QUERRIES */
+
+@media screen and (min-width: 768px) {
+  .home {
+    margin-top: 3rem;
+  }
 }
