@@ -40,15 +40,16 @@ const EditProfileModal = ({
     const formData = new FormData();
     formData.append("imgFile", picFile);
     formData.append("username", updatedUsername);
+    const apiUrl =
+      import.meta.env.MODE === "production"
+        ? import.meta.env.VITE_ONRENDER_API_URL
+        : import.meta.env.VITE_API_URL;
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/update-user`,
-        {
-          method: "PATCH",
-          body: formData,
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${apiUrl}/update-user`, {
+        method: "PATCH",
+        body: formData,
+        credentials: "include",
+      });
       const result = await response.json();
       const updatedUser = result.updatedUser;
       dispatch(setCurrentUser(updatedUser));

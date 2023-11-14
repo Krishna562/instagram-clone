@@ -15,7 +15,7 @@ import store from "./store/store.js";
 import { Provider } from "react-redux";
 import { disableReactDevTools } from "@fvilers/disable-react-devtools";
 
-if (process.env.NODE_ENV === "production") disableReactDevTools();
+if (import.meta.env.MODE === "production") disableReactDevTools();
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
