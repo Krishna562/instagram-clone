@@ -16,7 +16,7 @@ import {
 import { setErr } from "./store/reducers/Error/errReducer";
 import Layout from "./components/Layout";
 import Profile from "./components/Profile/Profile";
-import PageNotFound from "./views/page not found/pageNotFound";
+import PageNotFound from "./views/page not found/PageNotFound";
 import RequestSent from "./views/auth/RequestSent.jsx";
 import ResetPassword from "./views/auth/ResetPassword.jsx";
 import { setIsDarkTheme } from "./store/reducers/More/moreReducer.js";
