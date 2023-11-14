@@ -9,11 +9,22 @@ const Person = ({ person, setIsFollowModalOpen }) => {
 
   const currentUser = useSelector((state) => state.user.currentUser);
 
-  const isCurrentUserFollowing = currentUser.following.find(
-    (followingId) => followingId === _id
-  )
-    ? true
-    : false;
+  let followBtnText = "";
+  if (currentUser.following.find((followingId) => followingId === _id)) {
+    followBtnText = "Unfollow";
+  } else if (
+    currentUser.followRequestsSent.find((requestSent) => requestSent === _id)
+  ) {
+    followBtnText = "Requested";
+  } else {
+    followBtnText = "Follow";
+  }
+
+  const isFollowBtnBlue =
+    currentUser.following.find((followingId) => followingId === _id) ||
+    currentUser.followRequestsSent.find((requestId) => requestId === _id)
+      ? false
+      : true;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -48,13 +59,13 @@ const Person = ({ person, setIsFollowModalOpen }) => {
         <button
           className="btn"
           style={{
-            backgroundColor: isCurrentUserFollowing
+            backgroundColor: !isFollowBtnBlue
               ? "var(--NOT-ACTIVE-BACKGROUND)"
               : null,
           }}
           onClick={() => followUser()}
         >
-          {isCurrentUserFollowing ? "Unfollow" : "Follow"}
+          {followBtnText}
         </button>
       )}
     </div>

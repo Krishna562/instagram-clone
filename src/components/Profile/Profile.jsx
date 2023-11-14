@@ -31,7 +31,7 @@ const Profile = () => {
   const allUserPosts = useSelector((state) => state.user.allUserPosts);
   const currentUser = useSelector((state) => state.user.currentUser);
 
-  const { following, followers, profilePic, _id } = useSelector(
+  const { following, followers, profilePic, _id, isPrivate } = useSelector(
     (state) => state.user.specificUser
   );
 
@@ -92,6 +92,28 @@ const Profile = () => {
     getTaggedPosts();
   }, [isPostsActive]);
 
+  const canCurrentUserAccess =
+    (!isLoading &&
+      currentUser.following.find((following) => following === _id)) ||
+    !isPrivate ||
+    _id === currentUser._id
+      ? true
+      : false;
+
+  const hasFollowers = !isLoading && followers.length ? true : false;
+  const isFollowingSomeone = !isLoading && following.length ? true : false;
+
+  let followBtnText = "";
+  if (currentUser.following.find((followingId) => followingId === _id)) {
+    followBtnText = "Unfollow";
+  } else if (
+    currentUser.followRequestsSent.find((requestSent) => requestSent === _id)
+  ) {
+    followBtnText = "Requested";
+  } else {
+    followBtnText = "Follow";
+  }
+
   if (!isLoading) {
     return (
       <section className="profile__con">
@@ -141,21 +163,25 @@ const Profile = () => {
                         followUser();
                       }}
                     >
-                      {currentUser.following.find(
-                        (followingId) => followingId === _id
-                      )
-                        ? "Unfollow"
-                        : "Follow"}
+                      {followBtnText}
                     </button>
                   )}
                 </div>
+
+                {/* SMALL SCREEN - POST, FOLLOWERS, FOLLOWING TABS */}
+
                 <div className="profile__info-status">
                   <div className="profile__info-status-tab">
                     <span>{allUserPosts.length}</span> posts
                   </div>
                   <div
                     className="profile__info-status-tab lowerOpacity"
+                    style={{
+                      cursor:
+                        !canCurrentUserAccess || !hasFollowers ? "auto" : null,
+                    }}
                     onClick={() => {
+                      if (!canCurrentUserAccess || !hasFollowers) return;
                       setIsFollowModalOpen(true);
                       setIsFollowersTabActive(true);
                     }}
@@ -165,7 +191,14 @@ const Profile = () => {
                   </div>
                   <div
                     className="profile__info-status-tab lowerOpacity"
+                    style={{
+                      cursor:
+                        !canCurrentUserAccess || !isFollowingSomeone
+                          ? "auto"
+                          : null,
+                    }}
                     onClick={() => {
+                      if (!canCurrentUserAccess || !isFollowingSomeone) return;
                       setIsFollowModalOpen(true);
                       setIsFollowersTabActive(false);
                     }}
@@ -175,13 +208,21 @@ const Profile = () => {
                 </div>
               </div>
             </div>
+
+            {/* LARGE SCREEN - POST, FOLLOWERS, FOLLOWING TABS */}
+
             <div className="profile__status">
               <div className="profile__status-tab">
                 <span>{allUserPosts.length}</span> posts
               </div>
               <div
                 className="profile__status-tab lowerOpacity"
+                style={{
+                  cursor:
+                    !canCurrentUserAccess || !hasFollowers ? "auto" : null,
+                }}
                 onClick={() => {
+                  if (!canCurrentUserAccess || !hasFollowers) return;
                   setIsFollowModalOpen(true);
                   setIsFollowersTabActive(true);
                 }}
@@ -191,7 +232,14 @@ const Profile = () => {
               </div>
               <div
                 className="profile__status-tab lowerOpacity"
+                style={{
+                  cursor:
+                    !canCurrentUserAccess || !isFollowingSomeone
+                      ? "auto"
+                      : null,
+                }}
                 onClick={() => {
+                  if (!canCurrentUserAccess || !isFollowingSomeone) return;
                   setIsFollowModalOpen(true);
                   setIsFollowersTabActive(false);
                 }}
@@ -202,44 +250,62 @@ const Profile = () => {
 
             {/* POST CATEGORIES */}
 
-            <div className="profile__categories">
-              <i
-                className={`profile__categories-category ${
-                  isPostsActive ? "profile__categories-category-active" : null
-                } lowerOpacity`}
-                onClick={() => {
-                  setIsPostsActive(true);
-                }}
-              >
-                <BsGrid /> <span>Posts</span>
-              </i>
-              <i
-                className={`profile__categories-category ${
-                  !isPostsActive ? "profile__categories-category-active" : null
-                } lowerOpacity`}
-                onClick={() => {
-                  setIsPostsActive(false);
-                }}
-              >
-                <BsTag /> <span>Tagged</span>
-              </i>
-            </div>
+            {canCurrentUserAccess ? (
+              <>
+                <div className="profile__categories">
+                  <i
+                    className={`profile__categories-category ${
+                      isPostsActive
+                        ? "profile__categories-category-active"
+                        : null
+                    } lowerOpacity`}
+                    onClick={() => {
+                      setIsPostsActive(true);
+                    }}
+                  >
+                    <BsGrid /> <span>Posts</span>
+                  </i>
+                  <i
+                    className={`profile__categories-category ${
+                      !isPostsActive
+                        ? "profile__categories-category-active"
+                        : null
+                    } lowerOpacity`}
+                    onClick={() => {
+                      setIsPostsActive(false);
+                    }}
+                  >
+                    <BsTag /> <span>Tagged</span>
+                  </i>
+                </div>
 
-            {/* PROFILE GRID */}
+                {/* PROFILE GRID */}
 
-            <div className="profile__grid">
-              {isPostsActive
-                ? allUserPosts.map((post) => (
-                    <PostCard key={post._id} post={post} />
-                  ))
-                : taggedPosts.map((taggedPost) => (
-                    <PostCard
-                      key={taggedPost._id}
-                      post={taggedPost}
-                      creator={taggedPost.creatorId}
-                    />
-                  ))}
-            </div>
+                <div className="profile__grid">
+                  {isPostsActive
+                    ? allUserPosts.map((post) => (
+                        <PostCard key={post._id} post={post} />
+                      ))
+                    : taggedPosts.map((taggedPost) => (
+                        <PostCard
+                          key={taggedPost._id}
+                          post={taggedPost}
+                          creator={taggedPost.creatorId}
+                        />
+                      ))}
+                </div>
+                {allUserPosts.length === 0 && isPostsActive && (
+                  <div className="noPosts">No posts</div>
+                )}
+                {taggedPosts.length === 0 && !isPostsActive && (
+                  <div className="noPosts">No posts</div>
+                )}
+              </>
+            ) : (
+              <section className="notFollowing">
+                This account is Private. Follow it to see its posts
+              </section>
+            )}
           </section>
         </div>
       </section>

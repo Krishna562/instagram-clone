@@ -29,19 +29,6 @@ function App() {
   const isAuthenticated = useSelector((state) => state.user.isLoggedIn);
   const isDarkTheme = useSelector((state) => state.more.isDarkTheme);
 
-  const userLoggedIn = async (cb) => {
-    try {
-      const result = await axios.get("/loggedIn");
-      dispatch(checkAuthStatus(result.data.isLoggedIn));
-      dispatch(setCurrentUser(result.data.user));
-    } catch (err) {
-      dispatch(checkAuthStatus(false));
-      dispatch(setErr(err.response.data));
-    } finally {
-      cb();
-    }
-  };
-
   useEffect(() => {
     userLoggedIn(() => {
       if (JSON.parse(localStorage.getItem("isDarkTheme")) === null) {
@@ -62,6 +49,19 @@ function App() {
       document.body.classList.remove("dark-theme");
     }
   }, [isDarkTheme]);
+
+  const userLoggedIn = async (cb) => {
+    try {
+      const result = await axios.get("/loggedIn");
+      dispatch(checkAuthStatus(result.data.isLoggedIn));
+      dispatch(setCurrentUser(result.data.user));
+    } catch (err) {
+      dispatch(checkAuthStatus(false));
+      dispatch(setErr(err.response.data));
+    } finally {
+      cb();
+    }
+  };
 
   if (!isLoading) {
     return (

@@ -2,6 +2,7 @@ import { BiSearchAlt } from "react-icons/bi";
 import { TbHome } from "react-icons/tb";
 import { BsPlusSquare, BsInstagram } from "react-icons/bs";
 import { FaBars } from "react-icons/fa";
+import { AiOutlineHeart } from "react-icons/ai";
 import InstagramLogo from "../../assets/InstagramLogo.svg";
 import { setIsCreateModalOpen } from "../../store/reducers/Post/postReducer";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,13 +11,16 @@ import { useNavigate } from "react-router-dom";
 import MoreDialog from "./MoreDialog";
 import { setIsMoreDialogOpen } from "../../store/reducers/More/moreReducer";
 import {
+  setIsNotifBarVisible,
   setIsSearchbarVisible,
+  setNotifBtnRef,
   setSearchBtnRef,
+  setWillHideNotifBar,
 } from "../../store/reducers/User/userReducer";
 import { useEffect, useRef } from "react";
 
 const Sidebar = () => {
-  const { username, profilePic } = useSelector(
+  const { username, profilePic, isPrivate } = useSelector(
     (state) => state.user.currentUser
   );
   const isMoreDialogOpen = useSelector((state) => state.more.isMoreDialogOpen);
@@ -24,9 +28,11 @@ const Sidebar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const searchBtnRef = useRef();
+  const notifBtnRef = useRef();
 
   useEffect(() => {
     dispatch(setSearchBtnRef(searchBtnRef.current));
+    dispatch(setNotifBtnRef(notifBtnRef.current));
   }, []);
 
   return (
@@ -56,6 +62,26 @@ const Sidebar = () => {
             <i className="sidebar__i">{<BiSearchAlt />}</i>
             <span className="sidebar__btnText">Search Users</span>
           </button>
+
+          {/* NOTIFICATIONS */}
+
+          {isPrivate && (
+            <button
+              ref={notifBtnRef}
+              className="sidebar__btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                dispatch(setWillHideNotifBar(false));
+                dispatch(setIsNotifBarVisible(true));
+              }}
+            >
+              <i className="sidebar__i">{<AiOutlineHeart />}</i>
+              <span className="sidebar__btnText">Follow Requests</span>
+            </button>
+          )}
+
+          {/* ADD POST BUTTON */}
+
           <button
             className="sidebar__btn"
             onClick={() => {
@@ -72,7 +98,7 @@ const Sidebar = () => {
             }}
           >
             <img
-              className="sidebar__i sidebar__profilePicIcon"
+              className="sidebar__profilePicIcon"
               src={profilePic ? profilePic : defaultProfilePic}
             />
             <span className="sidebar__btnText">Profile</span>

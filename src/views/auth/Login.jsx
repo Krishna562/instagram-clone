@@ -13,14 +13,13 @@ import {
 
 const Login = () => {
   const isAuthenticated = useSelector((state) => state.user.isLoggedIn);
+  const methods = useForm({ resolver: yupResolver(yupLoginSchema) });
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   if (isAuthenticated) {
     return <Navigate to={"/"} />;
   }
-
-  const methods = useForm({ resolver: yupResolver(yupLoginSchema) });
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const onSubmit = methods.handleSubmit(async (data) => {
     const { email, password } = data;

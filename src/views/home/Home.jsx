@@ -10,6 +10,10 @@ const Home = () => {
   const dispatch = useDispatch();
   const allPosts = useSelector((state) => state.post.allPosts);
 
+  useEffect(() => {
+    getAllPosts();
+  }, []);
+
   const getAllPosts = async () => {
     try {
       const result = await axios.get("/all-posts");
@@ -17,13 +21,8 @@ const Home = () => {
       dispatch(setAllPosts(allPosts));
     } catch (err) {
       dispatch(setErr(err.response.data));
-    } finally {
     }
   };
-
-  useEffect(() => {
-    getAllPosts();
-  }, []);
 
   return (
     <section className="home">

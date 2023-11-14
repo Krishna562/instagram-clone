@@ -353,21 +353,24 @@ const CreatePost = () => {
                     className: "createPost__dropzone-input",
                   })}
                 />
-                <p className="createPost__dropzone-text">
+                <div className="createPost__dropzone-text">
                   {isDragActive ? (
-                    <span style={{ color: "dodgerblue", fontWeight: 700 }}>
+                    <p style={{ color: "dodgerblue", fontWeight: 700 }}>
                       Drop the image here
-                    </span>
+                    </p>
                   ) : (
-                    <span>Drag 'n' drop the image here</span>
+                    <p
+                      className="createPost__dropzone-instructions"
+                      style={{ display: !isDragActive ? "flex" : "none" }}
+                    >
+                      <span>Drag 'n' drop the image here</span>
+                      <span>
+                        Or click anywhere inside this box to browse image from
+                        device
+                      </span>
+                    </p>
                   )}
-                </p>
-                <p
-                  className="createPost__dropzone-text"
-                  style={{ display: isDragActive ? "none" : "block" }}
-                >
-                  Or click anywhere inside this box to browse image from device
-                </p>
+                </div>
               </div>
             </div>
           )}

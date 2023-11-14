@@ -13,13 +13,8 @@
   max-width: 400px;
   border-right: var(--BORDER);
   border-radius: 0 20px 20px 0;
-}
-
-.searchbar__con {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 100%;
 }
 
 .searchbar__upper {
@@ -109,8 +104,12 @@
   color: var(--LIGHT-TEXT-COLOR);
 }
 .result__deleteBtn {
+  border: none;
+  background: none;
+  font-size: 1.2rem;
   align-self: center;
   margin-right: 0.5rem;
+  cursor: pointer;
 }
 
 .searchbar__noRecent {

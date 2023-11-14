@@ -7,7 +7,7 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 95%;
+  width: 80%;
   background: var(--MODAL-BACKGROUND);
   color: var(--TEXT-COLOR);
   border-radius: 15px;
@@ -109,13 +109,23 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 .createPost__dropzone-text {
   padding: 1rem;
   font-size: 0.9rem;
   text-align: center;
-  transform: translateY(-50%);
+  transform: translate(-50%, -50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 60%;
+  /* height: 20%; */
+}
+.createPost__dropzone-instructions {
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .createPost__dropzone-boundary {
@@ -126,6 +136,10 @@
   align-items: center;
   flex-direction: column;
   justify-content: center;
+}
+
+.createPost__dropzone-input {
+  background: rebeccapurple;
 }
 
 /* CREATE POST - CAPTION SECTION */

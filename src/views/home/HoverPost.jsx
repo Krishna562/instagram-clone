@@ -1,5 +1,3 @@
-import { useState } from "react";
-import PostModal from "../../components/Posts/PostModal";
 import { useNavigate } from "react-router-dom";
 
 const HoverPost = ({ post, username }) => {

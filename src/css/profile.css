@@ -263,7 +263,7 @@
   background: var(--BACKGROUND);
   color: var(--TEXT-COLOR);
   border: none;
-  height: 85%;
+  height: 70%;
   width: 90%;
   border: var(--BORDER);
   border-radius: 15px;
@@ -521,7 +521,7 @@
   border: none;
   border-radius: 15px;
   height: auto;
-  width: 60%;
+  width: 85%;
   color: var(--TEXT-COLOR);
   background: var(--BACKGROUND);
   border: var(--BORDER);
@@ -578,6 +578,7 @@
   padding: 1rem;
   display: flex;
   flex-direction: column;
+
   gap: 0.3rem;
 }
 .editProfile__changeUsername:hover {
@@ -588,6 +589,8 @@
 .editProfile__changeUsername p {
   color: var(--LIGHT-TEXT-COLOR);
   font-size: 0.9rem;
+  width: 100%;
+  text-align: left;
 }
 
 .editProfile__changeUsername input {
@@ -705,6 +708,31 @@
   font-weight: 700;
 }
 
+/* NOT FOLLOWING PRIVATE ACCOUNT */
+
+.notFollowing {
+  border: var(--BORDER);
+  margin-top: 5rem;
+  padding: 1rem 2rem;
+}
+
+/* NO POSTS */
+
+.noPosts {
+  border: var(--BORDER);
+  padding: 1rem 2rem;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@media screen and (min-width: 600px) {
+  .postModal__con {
+    height: 85%;
+  }
+}
+
 @media screen and (min-width: 768px) {
   .profile {
     width: 90%;
@@ -761,6 +789,7 @@
 
   .postModal__con {
     flex-direction: row;
+    height: 65%;
   }
   .postModal__userInfo-top {
     display: none;
@@ -804,6 +833,9 @@
 @media screen and (min-width: 1250px) {
   .profile__underSidebar {
     width: 250px;
+  }
+  .postModal__con {
+    height: 80%;
   }
   .postModal__postImg-con {
     width: 60%;

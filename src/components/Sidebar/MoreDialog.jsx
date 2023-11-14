@@ -1,5 +1,5 @@
 import { BiMoon, BiLogOut } from "react-icons/bi";
-import { MdLightMode } from "react-icons/md";
+import { MdLightMode, MdPublic, MdPublicOff } from "react-icons/md";
 import { AiFillCaretLeft } from "react-icons/ai";
 import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -8,14 +8,23 @@ import {
   setIsDarkTheme,
 } from "../../store/reducers/More/moreReducer";
 import axios from "../../axios/axios";
-import { useNavigate } from "react-router-dom";
-import { checkAuthStatus } from "../../store/reducers/User/userReducer";
+import {
+  checkAuthStatus,
+  setCurrentUser,
+} from "../../store/reducers/User/userReducer";
 
 const MoreDialog = () => {
   const isMoreDialogOpen = useSelector((state) => state.more.isMoreDialogOpen);
   const isDarkTheme = useSelector((state) => state.more.isDarkTheme);
+  const currentUser = useSelector((state) => state.user.currentUser);
+  const { isPrivate } = currentUser;
 
-  const [isSwitchingAppearance, setIsSwitchingAppearance] = useState(false);
+  const [subSection, setSubSection] = useState({
+    isVisible: true,
+    section: "",
+  });
+
+  const { isVisible, section } = subSection;
 
   const dispatch = useDispatch();
 
@@ -26,7 +35,7 @@ const MoreDialog = () => {
       dialogRef.current.show();
     } else {
       dialogRef.current.close();
-      setIsSwitchingAppearance(false);
+      setSubSection({ isVisible: false, section: "" });
     }
   }, [isMoreDialogOpen]);
 
@@ -39,6 +48,19 @@ const MoreDialog = () => {
     }
   };
 
+  const switchAccountVisibility = async () => {
+    try {
+      const result = await axios.put("/toggle-account-visibility", {
+        currentUser: currentUser,
+      });
+      const updatedUser = result.data.updatedUser;
+      dispatch(setCurrentUser(updatedUser));
+    } catch (err) {
+      console.log(err);
+      dispatch(setErr(err));
+    }
+  };
+
   return (
     <dialog
       className="moreDialog"
@@ -46,18 +68,45 @@ const MoreDialog = () => {
       onClose={() => {
         dispatch(setIsMoreDialogOpen(false));
       }}
+      style={{
+        height: isVisible ? "130px" : null,
+        transform: isVisible ? "translateY(30%)" : null,
+      }}
     >
       <div
         className="moreDialog__con"
         style={{
-          transform: isSwitchingAppearance ? "translateX(-50%)" : null,
+          transform: isVisible ? "translateX(-50%)" : null,
         }}
       >
         <ul className="moreDialog__options">
           <li className="moreDialog__option">
             <span
               className="moreDialog__hoverOverlay"
-              onClick={() => setIsSwitchingAppearance(true)}
+              onClick={() =>
+                setSubSection({
+                  isVisible: true,
+                  section: "switchAccountVisibility",
+                })
+              }
+            >
+              {isPrivate ? (
+                <MdPublicOff className="moreDialog__icon" />
+              ) : (
+                <MdPublic className="moreDialog__icon" />
+              )}
+              Switch account visibility
+            </span>
+          </li>
+          <li className="moreDialog__option">
+            <span
+              className="moreDialog__hoverOverlay"
+              onClick={() =>
+                setSubSection({
+                  isVisible: true,
+                  section: "switchDarkTheme",
+                })
+              }
             >
               {isDarkTheme ? (
                 <BiMoon className="moreDialog__icon" />
@@ -88,53 +137,90 @@ const MoreDialog = () => {
           <div className="moreDialog__darkTheme-heading">
             <span
               className="moreDialog__darkTheme-heading-left"
-              onClick={() => setIsSwitchingAppearance(false)}
+              onClick={() => setSubSection({ isVisible: false, section: "" })}
             >
               <AiFillCaretLeft className="moreDialog__icon" />
-              Switch appearance
+              {section === "switchDarkTheme"
+                ? "Switch appearance"
+                : "Account visibility"}
             </span>
-            {isDarkTheme ? (
-              <BiMoon className="moreDialog__icon" />
+            {section === "switchDarkTheme" ? (
+              <span>
+                {isDarkTheme ? (
+                  <BiMoon className="moreDialog__icon" />
+                ) : (
+                  <MdLightMode className="moreDialog__icon" />
+                )}
+              </span>
             ) : (
-              <MdLightMode className="moreDialog__icon" />
+              <span>
+                {isPrivate ? (
+                  <MdPublicOff className="moreDialog__icon" />
+                ) : (
+                  <MdPublic className="moreDialog__icon" />
+                )}
+              </span>
             )}
           </div>
 
-          {/* DARK THEME TOGGLE */}
+          {/* DARK THEME AND PRIVATE ACCOUNT TOGGLE */}
 
           <div className="moreDialog__option">
             <span
               className="moreDialog__hoverOverlay"
               onClick={() => {
-                localStorage.setItem(
-                  "isDarkTheme",
-                  JSON.stringify(!isDarkTheme)
-                );
-                dispatch(
-                  setIsDarkTheme(
-                    JSON.parse(localStorage.getItem("isDarkTheme"))
-                  )
-                );
+                if (section === "switchDarkTheme") {
+                  localStorage.setItem(
+                    "isDarkTheme",
+                    JSON.stringify(!isDarkTheme)
+                  );
+                  dispatch(
+                    setIsDarkTheme(
+                      JSON.parse(localStorage.getItem("isDarkTheme"))
+                    )
+                  );
+                } else {
+                  switchAccountVisibility();
+                }
               }}
             >
               <div className="moreDialog__darkTheme-toggle">
                 <span className="moreDialog__darkTheme-toggle-title">
-                  Dark mode
+                  {section === "switchDarkTheme"
+                    ? "Dark mode"
+                    : "Private account"}
                 </span>
-                <span
-                  className="toggle"
-                  style={{
-                    backgroundColor: isDarkTheme ? "dodgerblue" : null,
-                  }}
-                >
+                {section === "switchDarkTheme" ? (
                   <span
-                    className="toggle__switch"
+                    className="toggle"
                     style={{
-                      right: isDarkTheme ? "2px" : null,
-                      left: isDarkTheme ? null : "2px",
+                      backgroundColor: isDarkTheme ? "dodgerblue" : null,
                     }}
-                  ></span>
-                </span>
+                  >
+                    <span
+                      className="toggle__switch"
+                      style={{
+                        right: isDarkTheme ? "2px" : null,
+                        left: isDarkTheme ? null : "2px",
+                      }}
+                    ></span>
+                  </span>
+                ) : (
+                  <span
+                    className="toggle"
+                    style={{
+                      backgroundColor: isPrivate ? "dodgerblue" : null,
+                    }}
+                  >
+                    <span
+                      className="toggle__switch"
+                      style={{
+                        right: isPrivate ? "2px" : null,
+                        left: isPrivate ? null : "2px",
+                      }}
+                    ></span>
+                  </span>
+                )}
               </div>
             </span>
           </div>

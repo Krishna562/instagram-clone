@@ -32,7 +32,14 @@ const ProfilePicModal = ({
   }, [isProfilePicModalOpen]);
 
   return (
-    <dialog className="createPost" ref={modalRef}>
+    <dialog
+      className="createPost"
+      ref={modalRef}
+      onClose={(e) => {
+        e.stopPropagation();
+        setIsProfilePicModalOpen(false);
+      }}
+    >
       <div className="createPost__container">
         <AiOutlineCloseCircle
           className="createPost__close-btn"
@@ -100,14 +107,17 @@ const ProfilePicModal = ({
                       Drop the image here
                     </span>
                   ) : (
-                    <span>Drag 'n' drop the image here</span>
+                    <span
+                      style={{ display: isDragActive ? "none" : "flex" }}
+                      className="createPost__dropzone-instructions"
+                    >
+                      <span>Drag 'n' drop the image here</span>
+                      <span>
+                        Or click anywhere inside this box to browse image from
+                        device
+                      </span>
+                    </span>
                   )}
-                </p>
-                <p
-                  className="createPost__dropzone-text"
-                  style={{ display: isDragActive ? "none" : "block" }}
-                >
-                  Or click anywhere inside this box to browse image from device
                 </p>
               </div>
             </div>

@@ -1,0 +1,106 @@
+.notifBar {
+  color: var(--TEXT-COLOR);
+  background-color: var(--BACKGROUND);
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 60vw;
+  z-index: 20;
+  overflow: hidden;
+  max-width: 400px;
+  border-right: var(--BORDER);
+  border-radius: 0 20px 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.notifBar__header {
+  padding: 1rem;
+  border-bottom: var(--BORDER);
+}
+
+.notifBar__noRequests {
+  color: var(--LIGHT-TEXT-COLOR);
+  left: 50%;
+  top: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+}
+
+.notifBar__requestsCon {
+  display: flex;
+  flex-direction: column;
+}
+
+/* REQUEST */
+
+.followRequest {
+  display: flex;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 1rem;
+}
+
+.followRequest:hover {
+  background: var(--HOVER-OVERLAY-BACKGROUND);
+}
+
+.followRequest img {
+  width: 45px;
+  height: 45px;
+  object-fit: cover;
+  border-radius: 50%;
+  align-self: center;
+}
+
+.followRequest__message {
+  font-size: 0.85rem;
+  flex-grow: 1;
+  align-self: center;
+}
+.followRequest__username {
+  font-weight: 700;
+}
+
+.followRequest__actionBtnCon {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.followRequest__deleteBtn {
+  color: var(--TEXT-COLOR);
+  background-color: var(--MODAL-BACKGROUND);
+}
+
+/* ANIMATIONS */
+
+@keyframes showAnimation {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes hideAnimation {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+/* MEDIA QUERRIES */
+
+@media screen and (min-width: 600px) {
+  .followRequest__actionBtnCon {
+    flex-direction: row;
+    align-items: center;
+  }
+}

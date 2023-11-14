@@ -102,7 +102,11 @@ const PostModal = ({ post, isPostModalOpen, setIsPostModalOpen, creator }) => {
   };
 
   return (
-    <dialog className="postModal" ref={postModalRef}>
+    <dialog
+      className="postModal"
+      ref={postModalRef}
+      onClose={() => setIsPostModalOpen(false)}
+    >
       <AiOutlineClose
         className="postModal__close-btn"
         onClick={() => {

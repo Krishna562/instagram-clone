@@ -8,7 +8,6 @@ import {
   setIsSearchbarVisible,
 } from "../../store/reducers/User/userReducer";
 import { setErr } from "../../store/reducers/Error/errReducer";
-import { useNavigate } from "react-router-dom";
 
 const Searchbar = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -23,7 +22,6 @@ const Searchbar = () => {
   const [searchVal, setSearchVal] = useState("");
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const searchbarRef = useRef();
 
   const handleClickOutside = (e) => {
@@ -49,10 +47,8 @@ const Searchbar = () => {
     }
   };
 
-  const updateUserSearchHistory = async (userToAddId, username) => {
-    dispatch(setIsSearchbarVisible(false));
+  const updateUserSearchHistory = async (userToAddId) => {
     setSearchVal("");
-    navigate(`/${username}`);
     try {
       const result = await axios.put("/update-history", {
         userId: userToAddId,
@@ -100,65 +96,63 @@ const Searchbar = () => {
       }}
       ref={searchbarRef}
     >
-      <div className="searchbar__con">
-        <div className="searchbar__upper">
-          <h3 className="searchbar__header">Search</h3>
-          <input
-            type="text"
-            placeholder="Search"
-            value={searchVal}
-            onChange={(e) => setSearchVal(e.target.value)}
-          />
-        </div>
-        <div className="searchbar__lower">
-          {!searchVal && (
-            <div className="searchbar__recent">
-              <span>Recent</span>
-              {searchHistory.length > 0 && (
-                <button
-                  onClick={() => {
-                    clearEntireHistory();
-                  }}
-                >
-                  Clear All
-                </button>
-              )}
-            </div>
-          )}
-          <div className="searchbar__results">
-            {!searchVal && !searchHistory.length && (
-              <div className="searchbar__noRecent">No recent searches</div>
+      <div className="searchbar__upper">
+        <h3 className="searchbar__header">Search</h3>
+        <input
+          type="text"
+          placeholder="Search"
+          value={searchVal}
+          onChange={(e) => setSearchVal(e.target.value)}
+        />
+      </div>
+      <div className="searchbar__lower">
+        {!searchVal && (
+          <div className="searchbar__recent">
+            <span>Recent</span>
+            {searchHistory.length > 0 && (
+              <button
+                onClick={() => {
+                  clearEntireHistory();
+                }}
+              >
+                Clear All
+              </button>
             )}
-            {searchVal &&
-              allUsers.map((user) => {
-                if (
-                  user.username.toLowerCase().includes(searchVal.toLowerCase())
-                ) {
-                  return (
-                    <div
-                      key={user._id}
-                      onClick={() => {
-                        updateUserSearchHistory(user._id, user.username);
-                      }}
-                    >
-                      {" "}
-                      <SearchResult user={user} searchVal={searchVal} />
-                    </div>
-                  );
-                } else {
-                }
-              })}
-            {!searchVal &&
-              searchHistory.map((result) => {
-                return (
-                  <SearchResult
-                    user={result}
-                    key={result._id}
-                    searchVal={searchVal}
-                  />
-                );
-              })}
           </div>
+        )}
+        <div className="searchbar__results">
+          {!searchVal && !searchHistory.length && (
+            <div className="searchbar__noRecent">No recent searches</div>
+          )}
+          {searchVal &&
+            allUsers.map((user) => {
+              if (
+                user.username.toLowerCase().includes(searchVal.toLowerCase())
+              ) {
+                return (
+                  <div
+                    key={user._id}
+                    onClick={() => {
+                      updateUserSearchHistory(user._id);
+                    }}
+                  >
+                    {" "}
+                    <SearchResult user={user} searchVal={searchVal} />
+                  </div>
+                );
+              } else {
+              }
+            })}
+          {!searchVal &&
+            searchHistory.map((result) => {
+              return (
+                <SearchResult
+                  user={result}
+                  key={result._id}
+                  searchVal={searchVal}
+                />
+              );
+            })}
         </div>
       </div>
     </div>

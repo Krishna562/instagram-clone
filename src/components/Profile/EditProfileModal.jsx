@@ -61,7 +61,13 @@ const EditProfileModal = ({
   };
 
   return (
-    <dialog className="editProfile" ref={editProfileModalRef}>
+    <dialog
+      className="editProfile"
+      ref={editProfileModalRef}
+      onClose={() => {
+        setIsEditProfileModalOpen(false);
+      }}
+    >
       <ProfilePicModal
         setIsProfilePicModalOpen={setIsProfilePicModalOpen}
         isProfilePicModalOpen={isProfilePicModalOpen}
