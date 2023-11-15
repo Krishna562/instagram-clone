@@ -69,7 +69,7 @@ const CreatePost = () => {
         ? import.meta.env.VITE_ONRENDER_API_URL
         : import.meta.env.VITE_API_URL;
     try {
-      const response = await fetch(apiUrl, {
+      const response = await fetch(`${apiUrl}/createPost`, {
         method: "PUT",
         body: formData,
         credentials: "include",
