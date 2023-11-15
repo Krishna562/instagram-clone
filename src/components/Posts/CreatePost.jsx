@@ -38,6 +38,7 @@ const CreatePost = () => {
   const [captionVal, setCaptionVal] = useState("");
   const [isHovering, setIsHovering] = useState(false);
   const [tagDialogRef, setTagDialogRef] = useState();
+  const [isTagInstructionVisible, setIsTagInstructionVisible] = useState(false);
 
   const isCaptionSectionVisible = useSelector(
     (state) => state.post.isCaptionSectionVisible
@@ -160,6 +161,13 @@ const CreatePost = () => {
     }
   }, [isHovering]);
 
+  useEffect(() => {
+    if (isTagInstructionVisible)
+      setTimeout(() => {
+        setIsTagInstructionVisible(false);
+      }, 4000);
+  }, [isTagInstructionVisible]);
+
   return (
     <dialog
       className="createPost"
@@ -186,6 +194,7 @@ const CreatePost = () => {
             className="createPost__prev-btn"
             onClick={() => {
               dispatch(setIsCaptionSectionVisible(false));
+              setIsTagInstructionVisible(false);
               dispatch(setTempTags([]));
             }}
           />
@@ -206,6 +215,7 @@ const CreatePost = () => {
               className="createPost__next-btn"
               onClick={() => {
                 dispatch(setIsCaptionSectionVisible(true));
+                setTimeout(() => setIsTagInstructionVisible(true), 1000);
               }}
             />
           </div>
@@ -232,6 +242,11 @@ const CreatePost = () => {
                 setTagDialogPosition(e);
               }}
             >
+              {isTagInstructionVisible && isCaptionSectionVisible && (
+                <div className="createPost__tagInstruction">
+                  Click on the post image to tag people
+                </div>
+              )}
               <SearchTagDialog setTagDialogRef={setTagDialogRef} />
               {tempTags.map((tag) => {
                 const { username, position } = tag;
