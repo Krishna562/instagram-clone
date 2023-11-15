@@ -28,9 +28,13 @@ const Home = () => {
     <section className="home">
       <CreatePost />
       <div className="home__postsCon">
-        {allPosts.map((post) => {
-          return <Post post={post} key={post._id} />;
-        })}
+        {allPosts.length > 0 ? (
+          allPosts.map((post) => {
+            return <Post post={post} key={post._id} />;
+          })
+        ) : (
+          <div className="noPosts">No posts</div>
+        )}
       </div>
     </section>
   );
