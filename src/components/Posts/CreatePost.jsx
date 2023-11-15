@@ -64,8 +64,12 @@ const CreatePost = () => {
     formData.append("imgFile", imgFile);
     formData.append("caption", caption);
     formData.append("tags", JSON.stringify(tags));
+    const apiUrl =
+      import.meta.env.MODE === "production"
+        ? import.meta.env.VITE_ONRENDER_API_URL
+        : import.meta.env.VITE_API_URL;
     try {
-      const response = await fetch("http://localhost:3000/createPost", {
+      const response = await fetch(apiUrl, {
         method: "PUT",
         body: formData,
         credentials: "include",
