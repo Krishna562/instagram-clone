@@ -81,8 +81,7 @@ const CreatePost = () => {
       dispatch(setAllPosts([newPost, ...allPosts]));
       dispatch(setTempTags([]));
     } catch (err) {
-      console.log(err.response.data);
-      dispatch(setErr(err.response.data));
+      console.log(err);
     }
   };
 

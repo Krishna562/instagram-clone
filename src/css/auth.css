@@ -17,3 +17,11 @@
   width: 400px;
   object-fit: cover;
 }
+
+.requestSent__link {
+  color: royalblue;
+  text-decoration: none;
+}
+.requestSent__link:hover {
+  text-decoration: underline;
+}

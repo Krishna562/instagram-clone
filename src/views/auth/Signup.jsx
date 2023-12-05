@@ -24,15 +24,13 @@ const Signup = () => {
   const onSumbit = methods.handleSubmit(async (data) => {
     const { username, email, password, confirmPassword } = data;
     try {
-      const result = await axios.put("/signup", {
+      await axios.put("/signup", {
         username,
         email,
         password,
         confirmPassword,
       });
-      const user = result.data.user;
-      dispatch(setCurrentUser(user));
-      navigate("/login");
+      navigate("/request-sent/signup");
     } catch (err) {
       console.log(err);
       dispatch(setErr(err.response.data || err.message));

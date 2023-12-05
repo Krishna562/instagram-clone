@@ -33,7 +33,7 @@ const ForgotPassword = () => {
       const result = await axios.put("/resetPass-request", {
         email: email,
       });
-      navigate("/request-sent");
+      navigate("/request-sent/resetPassword");
     } catch (err) {
       console.log(err.response.data);
       dispatch(setErr(err.response.data));

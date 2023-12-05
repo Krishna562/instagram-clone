@@ -95,7 +95,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
-          <Route path="/request-sent" element={<RequestSent />} />
+          <Route path="/request-sent/:actionType" element={<RequestSent />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route path="/404" element={<PageNotFound />} />
         </Routes>
