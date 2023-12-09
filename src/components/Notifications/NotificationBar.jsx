@@ -1,8 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import axios from "../../axios/axios";
 import { useDispatch, useSelector } from "react-redux";
-import { setErr } from "../../store/reducers/Error/errReducer";
-import { useNavigate } from "react-router-dom";
 import {
   setCurrentUser,
   setIsNotifBarVisible,
@@ -14,10 +12,9 @@ const NotificationBar = () => {
   const isNotifBarVisible = useSelector(
     (state) => state.user.isNotifBarVisible
   );
-  const notifBtnRef = useSelector((state) => state.user.notifBtnRef);
   const willHideNotifBar = useSelector((state) => state.user.willHideNotifBar);
 
-  const { followRequestsRecieved, isPrivate } = useSelector(
+  const { followRequestsRecieved } = useSelector(
     (state) => state.user.currentUser
   );
 
