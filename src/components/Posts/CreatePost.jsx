@@ -74,7 +74,6 @@ const CreatePost = () => {
         body: formData,
         credentials: "include",
       });
-      console.log(response);
       const result = await response.json();
       const newPost = result.newPost;
       dispatch(setCurrentPost(newPost));
