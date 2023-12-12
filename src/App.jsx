@@ -1,4 +1,4 @@
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Signup from "./views/auth/Signup";
 import Home from "./views/home/Home";
 import Login from "./views/auth/Login";
@@ -57,6 +57,7 @@ function App() {
       dispatch(setCurrentUser(result.data.user));
     } catch (err) {
       dispatch(checkAuthStatus(false));
+      console.log(err);
       dispatch(setErr(err.response.data));
     } finally {
       cb();
